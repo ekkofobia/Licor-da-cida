@@ -111,10 +111,12 @@
 
         /* Rodapé Fixo no Checkout */
         .checkout-footer {
-            position: absolute; bottom: 0; width: 100%;
+            position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+            width: 100%; max-width: 430px;
             background: white; padding: 20px;
             box-shadow: 0 -10px 20px rgba(0,0,0,0.05);
             display: flex; align-items: center; justify-content: space-between; gap: 15px;
+            z-index: 2100;
         }
         .total-container { display: flex; flex-direction: column; }
         .total-label { font-size: 0.75rem; font-weight: 700; color: #777; text-transform: uppercase; }
