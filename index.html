@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Licor da Cida</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --color-black: #0A0908;
+            --color-burgundy: #49111C;
+            --color-offwhite: #F2F4F3;
+            --bg-app: #D1D5D6; 
+            --bg-card: #FFFFFF;
+            --text-primary: var(--color-black);
+            --border-radius: 20px;
+            --btn-height: 28px; 
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: #b8bcbd; display: flex; justify-content: center; min-height: 100vh; }
+
+        .app-container { 
+            width: 100%; max-width: 430px; 
+            background-color: var(--bg-app); 
+            min-height: 100vh; 
+            position: relative; 
+            display: flex; 
+            flex-direction: column; 
+        }
+
+        header { 
+            position: sticky; top: 0; z-index: 100;
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 8px 18px; height: 56px;
+            background-color: rgba(242, 244, 243, 0.3); 
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        
+        .header-logo-text { display: flex; align-items: center; gap: 8px; }
+        .header-logo-text i { color: var(--color-black); font-size: 1.45rem; }
+        .logo-text-span { font-weight: 900; letter-spacing: 0.5px; font-size: 0.8rem; color: var(--color-black); }
+
+        .liqueur-grid { 
+            display: grid; grid-template-columns: repeat(2, 1fr); 
+            gap: 15px; padding: 20px 15px 140px 15px; 
+        }
+        
+        .liqueur-card { 
+            background: var(--bg-card); border-radius: var(--border-radius); 
+            padding: 12px; box-shadow: 0 6px 15px rgba(0,0,0,0.06);
+            display: flex; flex-direction: column; border: 1px solid rgba(255,255,255,0.8);
+        }
+
+        .image-container { width: 100%; height: 110px; border-radius: 12px; overflow: hidden; margin-bottom: 10px; background: #f0f0f0; }
+        .image-container img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .liqueur-name { color: var(--text-primary); font-weight: 700; font-size: 0.95rem; margin-bottom: 2px; }
+        .liqueur-price { color: var(--color-burgundy); font-weight: 900; margin-bottom: 12px; font-size: 1rem; }
+
+        .card-actions { display: flex; align-items: center; justify-content: space-between; margin-top: auto; gap: 6px; }
+
+        .qty-wrapper { 
+            display: flex; align-items: center; 
+            background: #f5f5f5; border-radius: 8px; 
+            height: var(--btn-height); width: 62%; border: 1px solid #e0e0e0;
+        }
+        .btn-qty-action { background: none; border: none; color: var(--color-black); flex: 1; height: 100%; font-size: 1rem; cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center; }
+        .qty-num { color: var(--color-black); font-weight: 700; min-width: 18px; text-align: center; font-size: 0.85rem; }
+
+        .btn-info { 
+            background: var(--color-burgundy); border: none; color: white; 
+            height: var(--btn-height); width: 38%; border-radius: 8px; font-size: 0.52rem; 
+            font-weight: 800; text-transform: uppercase; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        /* Checkout Page */
+        #checkout-page { 
+            display: none; flex-direction: column; height: 100vh; position: fixed; 
+            top: 0; width: 100%; max-width: 430px; background: var(--color-offwhite); z-index: 2000; 
+        }
+        .checkout-scroll-area { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 120px; }
+        .form-input { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #ddd; margin-bottom: 10px; font-size: 1rem; background: white; outline: none; }
+        .form-input:focus { border-color: var(--color-burgundy); }
+        .section-title { font-size: 0.85rem; font-weight: 800; color: var(--color-burgundy); text-transform: uppercase; margin: 20px 0 10px 0; }
+
+        /* Delivery toggle */
+        .delivery-toggle { display: flex; gap: 8px; margin-bottom: 14px; }
+        .toggle-btn {
+            flex: 1; padding: 13px 8px; border-radius: 12px; border: 2px solid #ddd;
+            background: white; font-weight: 800; font-size: 0.82rem; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 0.5px; color: #888;
+            transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px;
+        }
+        .toggle-btn.active {
+            border-color: var(--color-burgundy); background: var(--color-burgundy);
+            color: white; box-shadow: 0 4px 12px rgba(73,17,28,0.25);
+        }
+        .addr-row { display: flex; gap: 8px; }
+        .addr-row .form-input { flex: 1; margin-bottom: 10px; }
+        .addr-row .form-input.num { flex: 0 0 80px; }
+        .frete-badge {
+            background: #fff8e1; border: 1px solid #ffe082; border-radius: 10px;
+            padding: 10px 14px; margin-bottom: 10px; font-size: 0.82rem;
+            color: #e65100; font-weight: 700; display: flex; align-items: center; gap: 8px;
+        }
+        .fields-block { animation: fadeSlide 0.22s ease; }
+        @keyframes fadeSlide { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+        /* Rodapé Fixo no Checkout */
+        .checkout-footer {
+            position: absolute; bottom: 0; width: 100%;
+            background: white; padding: 20px;
+            box-shadow: 0 -10px 20px rgba(0,0,0,0.05);
+            display: flex; align-items: center; justify-content: space-between; gap: 15px;
+        }
+        .total-container { display: flex; flex-direction: column; }
+        .total-label { font-size: 0.75rem; font-weight: 700; color: #777; text-transform: uppercase; }
+        .total-value { font-size: 1.3rem; font-weight: 900; color: var(--color-black); }
+        .btn-finish-whatsapp { 
+            flex: 1; background: #25D366; color: white; border: none; 
+            padding: 15px; border-radius: 15px; font-weight: 800; 
+            font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+            white-space: nowrap;
+            transition: background 0.5s ease, transform 0.3s ease, box-shadow 0.4s ease;
+        }
+        .btn-finish-whatsapp.activated {
+            animation: btn-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes btn-pop {
+            0%   { transform: scale(1); }
+            40%  { transform: scale(1.04); }
+            100% { transform: scale(1); }
+        }
+
+        /* ── FLYING ICON ANIMATION ── */
+        .fly-icon {
+            position: fixed;
+            width: 40px; height: 40px;
+            border-radius: 8px;
+            object-fit: cover;
+            z-index: 9999;
+            pointer-events: none;
+            transition: none;
+        }
+        @keyframes fly-to-cart {
+            0%   { transform: scale(1); opacity: 1; }
+            60%  { opacity: 1; }
+            100% { transform: scale(0.15); opacity: 0; }
+        }
+
+        /* Barra de Carrinho (Home) */
+        #cart-bar { 
+            position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); 
+            width: calc(100% - 30px); max-width: 400px; 
+            background: var(--color-black); color: white; 
+            padding: 18px; border-radius: 20px; display: none; 
+            justify-content: space-between; align-items: center; 
+            z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+            cursor: pointer; overflow: hidden;
+            border: 1.5px solid rgba(255,255,255,0.12);
+        }
+        #cart-bar::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 60%; height: 100%;
+            background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.18) 50%, transparent 100%);
+            animation: shimmer 2.2s infinite;
+            pointer-events: none;
+        }
+        @keyframes shimmer {
+            0%   { left: -100%; }
+            100% { left: 160%; }
+        }
+
+        /* ── PRODUCT DETAIL PAGE ── */
+        #detail-page {
+            display: none; flex-direction: column;
+            position: fixed; top: 0; left: 50%; transform: translateX(-50%);
+            width: 100%; max-width: 430px; height: 100vh;
+            background: var(--color-offwhite); z-index: 1500;
+            overflow: visible;
+        }
+        #detail-page.open { display: flex; }
+
+        .detail-hero {
+            position: relative; width: 100%; height: 240px; flex-shrink: 0;
+            background: #1a1a1a;
+        }
+        .detail-hero-img-wrap {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%; overflow: hidden;
+        }
+        .detail-hero img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        .detail-back-btn {
+            position: absolute; top: 16px; left: 16px;
+            background: rgba(255,255,255,0.85); backdrop-filter: blur(8px);
+            border: none; width: 38px; height: 38px; border-radius: 50%;
+            font-size: 1.2rem; font-weight: 900; cursor: pointer; color: var(--color-black);
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15); z-index: 10;
+        }
+        .detail-body {
+            flex: 1; padding: 8px 20px 80px;
+            overflow: hidden;
+            display: flex; flex-direction: column; justify-content: flex-start; gap: 6px;
+        }
+        .detail-name {
+            font-size: 1.7rem; font-weight: 900; color: var(--color-black);
+            margin-bottom: 0; line-height: 1.1;
+        }
+        .detail-price {
+            font-size: 1.3rem; font-weight: 900; color: var(--color-burgundy);
+            margin-top: 2px; margin-bottom: 4px;
+        }
+        .detail-desc {
+            font-size: 0.88rem; color: #555; line-height: 1.4;
+            margin-bottom: 0; padding-bottom: 0;
+            border-bottom: none;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        /* ── BOTTLE ALCOHOL WIDGET ── */
+        .alcohol-section { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+        .alcohol-label {
+            font-size: 0.72rem; font-weight: 800; text-transform: uppercase;
+            letter-spacing: 0.08em; color: #999; align-self: flex-start;
+        }
+        .bottle-wrap {
+            display: flex; flex-direction: column; align-items: center; gap: 10px;
+            cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent;
+        }
+        .bottle-hint {
+            font-size: 0.72rem; color: #aaa; letter-spacing: 0.04em;
+        }
+        /* SVG bottle itself is inline; liquid level controlled via JS */
+        .alcohol-pct-display {
+            font-size: 1.5rem; font-weight: 900; color: var(--color-burgundy);
+            letter-spacing: -0.02em; min-height: 36px;
+            transition: all 0.3s;
+        }
+        .alcohol-steps {
+            display: flex; gap: 8px; margin-top: 4px;
+        }
+        .alc-step {
+            width: 10px; height: 10px; border-radius: 50%;
+            background: #ddd; transition: background 0.3s, transform 0.2s;
+        }
+        .alc-step.filled { background: var(--color-burgundy); transform: scale(1.2); }
+
+        /* ── DETAIL FOOTER ── */
+        .detail-footer {
+            position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+            width: 100%; max-width: 430px;
+            background: white; padding: 16px 20px;
+            box-shadow: 0 -8px 24px rgba(0,0,0,0.08);
+            display: flex; align-items: center; gap: 12px; z-index: 1600;
+        }
+        .detail-qty-wrap {
+            display: flex; align-items: center;
+            background: #f5f5f5; border-radius: 10px;
+            border: 1px solid #e0e0e0; height: 46px;
+        }
+        .detail-qty-btn {
+            background: none; border: none; width: 40px; height: 100%;
+            font-size: 1.2rem; font-weight: 700; cursor: pointer; color: var(--color-black);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .detail-qty-num {
+            font-weight: 800; font-size: 1rem; min-width: 28px; text-align: center;
+        }
+        .detail-add-btn {
+            flex: 1; background: var(--color-burgundy); color: white;
+            border: none; border-radius: 12px; height: 46px;
+            font-weight: 800; font-size: 0.9rem; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            transition: opacity 0.2s;
+        }
+        .detail-add-btn:active { opacity: 0.8; }
+
+        /* slide-in animation */
+        @keyframes slideUp {
+            from { transform: translateX(-50%) translateY(40px); opacity: 0; }
+            to   { transform: translateX(-50%) translateY(0);    opacity: 1; }
+        }
+        #detail-page.open { animation: slideUp 0.28s cubic-bezier(0.22,1,0.36,1); }
+    </style>
+</head>
+<body>
+
+<!-- ══ LOADING SCREEN ══ -->
+<style>
+    #loading-screen {
+        position: fixed; top: 0; left: 50%; transform: translateX(-50%);
+        width: 100%; max-width: 430px; height: 100vh;
+        background: #0A0908;
+        z-index: 9999; display: flex; flex-direction: column;
+        align-items: center; justify-content: center; gap: 16px;
+        transition: opacity 0.4s;
+    }
+    .ls-scene { width: 280px; height: 280px; position: relative; }
+    .ls-scene svg { width: 100%; height: 100%; display: block; }
+
+    .ls-stream {
+        stroke-dasharray: 140; stroke-dashoffset: 140;
+        animation: ls-stream-flow 5s forwards;
+    }
+    .ls-bottle-group {
+        transform-origin: 0px 0px;
+        animation: ls-pour-bottle 5s forwards cubic-bezier(0.4,0,0.2,1);
+    }
+    .ls-liquid-group {
+        animation: ls-fill-glass 5s forwards cubic-bezier(0.4,0,0.2,1);
+    }
+    .ls-wave { animation: ls-wave-motion 0.6s infinite linear; }
+    .ls-splashes { animation: ls-splash-vis 5s forwards; }
+    .ls-drop1 { animation: ls-b1 0.35s infinite ease-out; }
+    .ls-drop2 { animation: ls-b2 0.45s infinite ease-out; }
+    .ls-drop3 { animation: ls-b3 0.30s infinite ease-out; }
+    .ls-drop4 { animation: ls-b4 0.40s infinite ease-out; }
+    .ls-drop5 { animation: ls-b5 0.38s infinite ease-out; }
+    .ls-bubbles { animation: ls-bubbles-rise 2s infinite linear; }
+    .ls-bubble1 { animation: ls-bf1 1.5s infinite ease-in; }
+    .ls-bubble2 { animation: ls-bf2 1.8s infinite ease-in; }
+    .ls-bubble3 { animation: ls-bf3 1.3s infinite ease-in; }
+
+    @keyframes ls-pour-bottle {
+        0%,12%  { transform: translate(280px,50px) rotate(25deg); }
+        22%,78% { transform: translate(200px,105px) rotate(-100deg); }
+        88%,100%{ transform: translate(280px,50px) rotate(25deg); }
+    }
+    @keyframes ls-stream-flow {
+        0%,18%  { stroke-dashoffset:140; opacity:0; }
+        19%     { opacity:0.8; }
+        23%,75% { stroke-dashoffset:0; opacity:1; }
+        80%     { stroke-dashoffset:-140; opacity:0; }
+        100%    { stroke-dashoffset:-140; opacity:0; }
+    }
+    @keyframes ls-fill-glass {
+        0%,22%   { transform:translateY(55px); opacity:1; }
+        88%,100% { transform:translateY(0px); opacity:1; }
+    }
+    @keyframes ls-wave-motion {
+        0%   { transform:translateX(0); }
+        100% { transform:translateX(-60px); }
+    }
+    @keyframes ls-splash-vis {
+        0%,21%  { opacity:0; }
+        22%,80% { opacity:1; }
+        82%,100%{ opacity:0; }
+    }
+    @keyframes ls-b1 { 0%,100%{transform:translate(0,0);} 50%{transform:translate(-6px,-14px);} }
+    @keyframes ls-b2 { 0%,100%{transform:translate(0,0);} 50%{transform:translate(7px,-20px);} }
+    @keyframes ls-b3 { 0%,100%{transform:translate(0,0);} 50%{transform:translate(-2px,-12px);} }
+    @keyframes ls-b4 { 0%,100%{transform:translate(0,0);} 50%{transform:translate(5px,-16px);} }
+    @keyframes ls-b5 { 0%,100%{transform:translate(0,0);} 50%{transform:translate(-4px,-10px);} }
+    @keyframes ls-bubbles-rise { 0%,25%{opacity:0;} 30%,85%{opacity:1;} 90%,100%{opacity:0;} }
+    @keyframes ls-bf1 { 0%{transform:translateY(0);opacity:0;} 20%{opacity:0.6;} 100%{transform:translateY(-30px);opacity:0;} }
+    @keyframes ls-bf2 { 0%{transform:translateY(0);opacity:0;} 20%{opacity:0.5;} 100%{transform:translateY(-40px);opacity:0;} }
+    @keyframes ls-bf3 { 0%{transform:translateY(0);opacity:0;} 20%{opacity:0.7;} 100%{transform:translateY(-25px);opacity:0;} }
+
+    #ls-name { opacity:0; transition: opacity 0.6s; text-align:center; }
+</style>
+
+<div id="loading-screen">
+    <div class="ls-scene">
+        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <clipPath id="ls-glass-clip">
+                    <path d="M 176 220 C 176 292, 224 292, 224 220 Z"/>
+                </clipPath>
+            </defs>
+
+            <!-- Jato -->
+            <line class="ls-stream" x1="200" y1="105" x2="200" y2="275"
+                  stroke="#8B1A2D" stroke-width="4" stroke-linecap="round"/>
+
+            <!-- Líquido na taça -->
+            <g clip-path="url(#ls-glass-clip)">
+                <g class="ls-liquid-group">
+                    <g class="ls-splashes" fill="#8B1A2D">
+                        <circle class="ls-drop1" cx="197" cy="232" r="1.5"/>
+                        <circle class="ls-drop2" cx="203" cy="232" r="1.8"/>
+                        <circle class="ls-drop3" cx="199" cy="234" r="1.2"/>
+                        <circle class="ls-drop4" cx="201" cy="231" r="1.5"/>
+                        <circle class="ls-drop5" cx="198" cy="235" r="1"/>
+                    </g>
+                    <path class="ls-wave"
+                          d="M 140 238 Q 160 228, 180 238 T 220 238 T 260 238 T 300 238 L 300 400 L 140 400 Z"
+                          fill="#8B1A2D"/>
+                    <rect x="140" y="238" width="160" height="60" fill="#8B1A2D"/>
+                    <g class="ls-bubbles" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="0.8">
+                        <circle class="ls-bubble1" cx="188" cy="270" r="1.5"/>
+                        <circle class="ls-bubble2" cx="208" cy="280" r="1.2"/>
+                        <circle class="ls-bubble3" cx="198" cy="260" r="1.8"/>
+                    </g>
+                </g>
+            </g>
+
+            <!-- Contorno da taça -->
+            <g fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="2.5" stroke-linecap="round">
+                <ellipse cx="200" cy="220" rx="24" ry="3"/>
+                <path d="M 176 220 C 176 292, 224 292, 224 220"/>
+                <path d="M 200 292 L 200 340"/>
+                <path d="M 182 344 Q 200 338 218 344"/>
+            </g>
+
+            <!-- Garrafa -->
+            <g class="ls-bottle-group">
+                <path d="M -8 -8 L -8 -28 C -8 -48, -22 -58, -22 -78 L -22 -170 L 22 -170 L 22 -78 C 22 -58, 8 -48, 8 -28 L 8 -8 Z"
+                      fill="#0A0908" stroke="rgba(255,255,255,0.85)" stroke-width="3" stroke-linejoin="round"/>
+                <rect x="-22" y="-135" width="44" height="40"
+                      fill="#0A0908" stroke="rgba(255,255,255,0.85)" stroke-width="3"/>
+                <line x1="-13" y1="-120" x2="13" y2="-120" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round"/>
+                <line x1="-13" y1="-107" x2="4"  y2="-107" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round"/>
+                <rect x="-11" y="-8" width="22" height="9" rx="2"
+                      fill="#0A0908" stroke="rgba(255,255,255,0.85)" stroke-width="3"/>
+            </g>
+        </svg>
+    </div>
+
+    <div id="ls-name">
+        <div style="font-family:'Segoe UI',sans-serif; font-size:1.5rem; font-weight:900; color:white; letter-spacing:0.06em;">LICOR DA CIDA</div>
+        <div style="font-family:'Segoe UI',sans-serif; font-size:0.7rem; color:rgba(255,255,255,0.4); letter-spacing:0.2em; margin-top:4px;">LICORES ARTESANAIS</div>
+    </div>
+</div>
+
+<script>
+    setTimeout(() => { const n=document.getElementById('ls-name'); if(n) n.style.opacity='1'; }, 1000);
+    setTimeout(() => {
+        const s=document.getElementById('loading-screen');
+        if(s){ s.style.opacity='0'; setTimeout(()=>s.remove(), 400); }
+    }, 5000);
+</script>
+
+<div class="app-container">
+    <div id="home-page">
+        <header>
+            <div class="header-logo-text">
+                <i class="fas fa-wine-bottle"></i>
+                <span class="logo-text-span">LICOR DA CIDA</span>
+            </div>
+            <button class="btn-info" style="width: auto; padding: 0 12px; font-size: 0.55rem;" onclick="document.getElementById('sobre-modal').style.display='flex'">Sobre</button>
+        </header>
+        <div class="liqueur-grid" id="grid"></div>
+    </div>
+
+    <!-- ══ MODAL SOBRE ══ -->
+    <div id="sobre-modal" style="display:none; position:fixed; top:0; left:50%; transform:translateX(-50%); width:100%; max-width:430px; height:100vh; background:var(--color-offwhite); z-index:3000; overflow-y:auto; flex-direction:column;">
+        <div style="padding:20px 20px 40px; box-sizing:border-box;">
+            <!-- Header -->
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; padding-top:8px;">
+                <button onclick="document.getElementById('sobre-modal').style.display='none'" style="background:var(--color-black); color:white; border:none; width:35px; height:35px; border-radius:10px; cursor:pointer; display:flex; align-items:center; justify-content:center;"><i class="fas fa-arrow-left"></i></button>
+                <h2 style="font-size:1.1rem; font-weight:900; color:var(--color-black); margin:0;">SOBRE NÓS</h2>
+                <div style="width:35px;"></div>
+            </div>
+
+            <!-- Funcionamento -->
+            <div style="background:white; border-radius:16px; padding:16px; margin-bottom:12px; border:1px solid #eee;">
+                <p style="font-weight:800; color:var(--color-burgundy); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:8px;">🕐 Funcionamento</p>
+                <p style="margin:0 0 4px; font-size:0.9rem; color:var(--color-black);"><strong>Segunda a Sexta:</strong> 09h às 18h</p>
+                <p style="margin:0; font-size:0.9rem; color:var(--color-black);"><strong>Sábado:</strong> 09h às 13h</p>
+            </div>
+
+            <!-- Qualidade -->
+            <div style="background:white; border-radius:16px; padding:16px; margin-bottom:12px; border:1px solid #eee;">
+                <p style="font-weight:800; color:var(--color-burgundy); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:8px;">🏆 Qualidade e Compromisso</p>
+                <p style="margin:0; font-size:0.88rem; color:#555; line-height:1.6;">Com anos de experiência no setor, construímos uma reputação sólida baseada na transparência, ética e no respeito aos prazos e acordos. Seja qual for sua necessidade em Licor, temos a estrutura e o conhecimento técnico para resolver com eficiência.</p>
+            </div>
+
+            <!-- Onde Encontrar -->
+            <div style="background:white; border-radius:16px; padding:16px; margin-bottom:12px; border:1px solid #eee;">
+                <p style="font-weight:800; color:var(--color-burgundy); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:8px;">📍 Onde Encontrar</p>
+                <p style="margin:0 0 12px; font-size:0.88rem; color:#555; line-height:1.6;">R. Manoel Cláudio do Nascimento, 66 - Alto da Maravilha, Juazeiro - BA, 48900-387</p>
+                <!-- Mapa -->
+                <div style="border-radius:12px; overflow:hidden; height:180px; margin-bottom:12px;">
+                    <iframe
+                        src="https://www.google.com/maps?q=R.+Manoel+Cl%C3%A1udio+do+Nascimento,+66,+Juazeiro,+BA,+Brasil&output=embed"
+                        width="100%" height="180" style="border:0; display:block;"
+                        allowfullscreen loading="lazy">
+                    </iframe>
+                </div>
+                <!-- Botões WhatsApp e Instagram -->
+                <div style="display:flex; gap:10px;">
+                    <a href="https://wa.me/5574988037555" target="_blank" style="flex:1; display:flex; align-items:center; justify-content:center; gap:8px; background:#25D366; color:white; border-radius:12px; padding:12px; font-weight:800; font-size:0.85rem; text-decoration:none;">
+                        <i class="fab fa-whatsapp" style="font-size:1.1rem;"></i> WhatsApp
+                    </a>
+                    <a href="https://instagram.com/" target="_blank" style="flex:1; display:flex; align-items:center; justify-content:center; gap:8px; background:linear-gradient(135deg,#f58529,#dd2a7b,#8134af); color:white; border-radius:12px; padding:12px; font-weight:800; font-size:0.85rem; text-decoration:none;">
+                        <i class="fab fa-instagram" style="font-size:1.1rem;"></i> Instagram
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="checkout-page">
+        <div style="padding: 15px 20px; background: white; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 15px; shrink: 0;">
+            <button onclick="togglePages()" style="background:var(--color-black); color:white; border:none; width:35px; height:35px; border-radius:10px;"><i class="fas fa-arrow-left"></i></button>
+            <h2 style="font-size:1.1rem; font-weight:900; color: var(--color-black);">CONFERIR PEDIDO</h2>
+        </div>
+        
+        <div class="checkout-scroll-area">
+            <div id="checkout-items"></div>
+            <div class="section-title">Informações de Entrega</div>
+
+            <!-- Toggle Entrega / Retirada -->
+            <div class="delivery-toggle">
+                <button class="toggle-btn active" id="btn-entrega" onclick="setModo('entrega')">
+                    🛵 Entrega
+                </button>
+                <button class="toggle-btn" id="btn-retirada" onclick="setModo('retirada')">
+                    🏪 Retirada
+                </button>
+            </div>
+
+            <!-- Campos: Entrega -->
+            <div id="campos-entrega" class="fields-block">
+                <div class="frete-badge">🚚 Taxa de entrega: <strong>R$ 7,00</strong></div>
+                <input type="text" id="c-name" class="form-input" placeholder="Seu Nome" oninput="checkForm()">
+                <div class="addr-row">
+                    <input type="text" id="c-addr" class="form-input" placeholder="Endereço e Bairro" oninput="checkForm()">
+                    <input type="text" id="c-num" class="form-input num" placeholder="N°" oninput="checkForm()">
+                </div>
+                <textarea id="c-obs" class="form-input" style="height:80px" placeholder="Alguma observação?"></textarea>
+            </div>
+
+            <!-- Campos: Retirada -->
+            <div id="campos-retirada" class="fields-block" style="display:none">
+                <input type="text" id="r-name" class="form-input" placeholder="Seu Nome" oninput="checkForm()">
+                <input type="tel" id="r-tel" class="form-input" placeholder="Telefone / WhatsApp" oninput="checkForm()">
+            </div>
+        </div>
+
+        <div class="checkout-footer">
+            <div class="total-container">
+                <span class="total-label">Total</span>
+                <span class="total-value" id="s-total">R$ 0,00</span>
+            </div>
+            <button id="btn-finalizar" class="btn-finish-whatsapp" onclick="enviarWhatsApp()" disabled style="opacity:1; cursor:not-allowed; background:#aaa; white-space:nowrap;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white" style="flex-shrink:0;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                Preencha os dados
+            </button>
+        </div>
+    </div>
+
+    <div id="cart-bar" onclick="togglePages()" style="cursor:pointer;">
+        <div style="display:flex; align-items:center; gap:12px;">
+            <span style="background:var(--color-burgundy); color:white; padding:4px 12px; border-radius:50px; font-weight:800;" id="cart-count">0</span>
+            <span style="font-weight:700;">Ver Sacola</span>
+        </div>
+        <span id="cart-total" style="font-weight:900;">R$ 0,00</span>
+    </div>
+
+    <!-- ══ PRODUCT DETAIL PAGE ══ -->
+    <div id="detail-page">
+        <div class="detail-hero">
+            <button class="detail-back-btn" onclick="closeDetail()"><i class="fas fa-arrow-left"></i></button>
+            <div class="detail-hero-img-wrap">
+                <img id="detail-img" src="" alt="">
+            </div>
+        </div>
+
+        <!-- Body -->
+        <div class="detail-body" style="padding-top:8px; position:relative;">
+            <div class="detail-name" id="detail-name"></div>
+            <div class="detail-price" id="detail-price" style="margin-bottom:2px;"></div>
+            <div class="detail-desc" id="detail-desc" style="margin-bottom:0;"></div>
+
+            <!-- Linha inferior: instrução à esquerda + garrafa à direita -->
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+                <div style="flex:1; text-align:left;">
+                    <div style="font-size:0.9rem; font-weight:800; color:#888; line-height:1.6;">Clique na garrafa e<br>Selecione o teor alcoólico</div>
+                </div>
+                <div id="bottle-wrap" onclick="advanceAlcohol()" style="
+                    display:flex; flex-direction:column; align-items:center; gap:4px;
+                    cursor:pointer; user-select:none; -webkit-tap-highlight-color:transparent; flex-shrink:0;
+                    margin-top: -29px; margin-right: 7%; transform: rotate(6deg);
+                ">
+                    <svg id="bottle-svg" width="64" height="144" viewBox="0 0 72 160" fill="none" xmlns="http://www.w3.org/2000/svg" style="transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1); filter: drop-shadow(0 6px 16px rgba(0,0,0,0.5));">
+                        <defs>
+                            <clipPath id="bottle-clip">
+                                <path d="M28 14 L28 38 Q14 50 12 72 L12 136 Q12 148 24 150 L48 150 Q60 148 60 136 L60 72 Q58 50 44 38 L44 14 Z"/>
+                            </clipPath>
+                            <linearGradient id="liquid-grad" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#8B1A2A" stop-opacity="0.7"/>
+                                <stop offset="100%" stop-color="#49111C" stop-opacity="0.95"/>
+                            </linearGradient>
+                        </defs>
+                        <rect id="liquid-rect" x="0" y="160" width="72" height="0"
+                              fill="url(#liquid-grad)" clip-path="url(#bottle-clip)"
+                              style="transition: y 0.6s cubic-bezier(0.34,1.56,0.64,1), height 0.6s cubic-bezier(0.34,1.56,0.64,1)"/>
+                        <rect id="liquid-shine" x="18" y="160" width="6" height="0" rx="3"
+                              fill="rgba(255,255,255,0.25)" clip-path="url(#bottle-clip)"
+                              style="transition: y 0.6s cubic-bezier(0.34,1.56,0.64,1), height 0.6s cubic-bezier(0.34,1.56,0.64,1)"/>
+                        <path d="M28 14 L28 38 Q14 50 12 72 L12 136 Q12 148 24 150 L48 150 Q60 148 60 136 L60 72 Q58 50 44 38 L44 14 Z"
+                              fill="rgba(255,255,255,0.1)" stroke="#49111C" stroke-width="2.5"/>
+                        <rect x="27" y="6" width="18" height="10" rx="3"
+                              fill="rgba(255,255,255,0.1)" stroke="#49111C" stroke-width="2"/>
+                        <rect x="29" y="2" width="14" height="7" rx="3" fill="#49111C"/>
+                        <rect x="16" y="90" width="40" height="36" rx="5"
+                              fill="rgba(255,255,255,0.55)" stroke="rgba(73,17,28,0.2)" stroke-width="1"/>
+                        <text x="36" y="104" text-anchor="middle" font-family="'Segoe UI',sans-serif"
+                              font-size="7" font-weight="800" fill="#49111C" letter-spacing="0.5">LICOR</text>
+                        <text x="36" y="114" text-anchor="middle" font-family="'Segoe UI',sans-serif"
+                              font-size="6" fill="#49111C" opacity="0.7">DA CIDA</text>
+                        <line x1="20" y1="120" x2="52" y2="120" stroke="#49111C" stroke-width="0.5" opacity="0.3"/>
+                        <path d="M17 75 Q15 100 16 130" stroke="rgba(255,255,255,0.35)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                    </svg>
+                    <div id="alc-pct" style="font-size:1rem; font-weight:900; color:var(--color-burgundy); line-height:1; text-align:center;">10% vol.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- detail footer (outside scroll area so it stays fixed) -->
+    <div class="detail-footer" id="detail-footer" style="display:none">
+        <div class="detail-qty-wrap">
+            <button class="detail-qty-btn" onclick="detailQtyChange(-1)">−</button>
+            <span class="detail-qty-num" id="detail-qty-num">1</span>
+            <button class="detail-qty-btn" onclick="detailQtyChange(1)">+</button>
+        </div>
+        <button class="detail-add-btn" onclick="detailAddToCart()">
+            <i class="fas fa-wine-bottle"></i>
+            Adicionar ao pedido
+        </button>
+    </div>
+
+<script>
+    const produtos = [
+        { id: 0, nome: "Abacaxi", img: "https://res.cloudinary.com/dwrq06fta/image/upload/q_auto/f_auto/v1776601762/Pineapple_sliced_on_202604190919_am1re0.jpg",
+          desc: "Um licor tropical refrescante, feito com abacaxi maduro selecionado, cachaça artesanal e açúcar demerara. O resultado é uma bebida dourada, equilibrada entre o doce e o ácido, com aroma irresistível de fruta fresca." },
+        { id: 1, nome: "Amarula", img: "https://res.cloudinary.com/dwrq06fta/image/upload/q_auto/f_auto/v1776603129/Liqueur_poured_into_202604190951_ug8asy.jpg",
+          desc: "Inspirado no clássico africano, este licor cremoso é preparado com leite condensado, creme de leite, cachaça suave e essência de baunilha. Aveludado, rico e perfeito para sobremesa ou puro." },
+        { id: 2, nome: "Maracujá", img: "https://res.cloudinary.com/dwrq06fta/image/upload/q_auto/f_auto/v1776601763/Garrafa_de_vidro_202604181526_pwiu9g.jpg",
+          desc: "Feito com polpa de maracujá fresco, cachaça envelhecida e açúcar cristal. Tem sabor intensamente azedo-adocicado, cor amarelo vibrante e aroma que lembra um suco natural recém-feito." },
+        { id: 3, nome: "Coco", img: "https://res.cloudinary.com/dwrq06fta/image/upload/q_auto/f_auto/v1776601766/Garrafa_com_l%C3%ADquido_202604181531_tkpp6w.jpg",
+          desc: "Preparado com coco ralado fresco, leite de coco artesanal e cachaça leve. Tem textura levemente cremosa, sabor tropical e adocicado, remetendo às praias brasileiras." },
+        { id: 4, nome: "Milho Verde", img: "https://res.cloudinary.com/dwrq06fta/image/upload/q_auto/f_auto/v1776601760/Fresh_corn_in_202604190921_y19d4y.jpg",
+          desc: "Uma receita inusitada e surpreendente: milho verde cozido, processado e infusionado com cachaça e açúcar. Sabor adocicado com notas terrosas, cor amarelo-palha e perfume de festa junina." },
+        { id: 5, nome: "Amendoim", img: "https://res.cloudinary.com/dwrq06fta/image/upload/q_auto/f_auto/v1776601762/Substituir_garrafa_imagem_202604181539_vzqmxn.jpg",
+          desc: "Amendoim torrado e moído, misturado com cachaça e açúcar mascavo. Tem sabor encorpado de amendoim com leve defumado natural, textura levemente densa e aroma que conquista." },
+        { id: 6, nome: "Tamarindo", img: "https://res.cloudinary.com/dwrq06fta/image/upload/q_auto/f_auto/v1776601760/Tamarind_pods_on_202604190924_rfip92.jpg",
+          desc: "Feito com polpa de tamarindo, açúcar e cachaça artesanal. Sabor azedo e doce ao mesmo tempo, cor marrom-avermelhada e aroma exótico. Uma explosão de sabores em cada gole." },
+        { id: 7, nome: "Jenipapo", img: "https://res.cloudinary.com/dwrq06fta/image/upload/q_auto/f_auto/v1776601759/Jenipapo_fruits_on_202604190926_sehye2.jpg",
+          desc: "Fruto típico do Nordeste brasileiro, o jenipapo dá origem a um licor escuro, de sabor único: levemente adstringente, adocicado e com notas terrosas. Tradição nordestina em garrafa." },
+        { id: 8, nome: "Cappuccino", img: "https://res.cloudinary.com/dwrq06fta/image/upload/q_auto/f_auto/v1776601767/Diminua_o_tamanho_202604181548_f6urog.jpg",
+          desc: "Café expresso, canela, creme de leite e cachaça se encontram para criar um licor cremoso e aromático. Perfeito após o jantar, com sorvete ou simplesmente puro, bem gelado." },
+        { id: 9, nome: "Menta", img: "https://res.cloudinary.com/dwrq06fta/image/upload/q_auto/f_auto/v1776601765/Garra_com_l%C3%ADquido_202604181543_ntlhae.jpg",
+          desc: "Folhas de hortelã frescas, maceradas em cachaça por dias, com açúcar e essência natural de menta. Cor verde intensa, aroma refrescante e sabor que refresca o paladar." }
+    ];
+
+    const PRECO = 35;
+    const FRETE = 7;
+    let cart = {}; // chave: "id_pct" ex: "0_15"
+    let cartOrder = []; // preserva ordem de inserção dos itens
+    let modo = 'entrega';
+
+    function flyToCart(imgSrc, originEl) {
+        const cartBar = document.getElementById('cart-bar');
+        const originRect = originEl.getBoundingClientRect();
+
+        // Se sacola ainda está oculta, usa posição estimada na parte inferior da tela
+        let destRect = cartBar.getBoundingClientRect();
+        if (destRect.width === 0) {
+            const vw = window.innerWidth;
+            const vh = window.innerHeight;
+            destRect = { right: Math.min(vw, 430) - 15, top: vh - 75, height: 60 };
+        }
+
+        const icon = document.createElement('img');
+        icon.src = imgSrc;
+        icon.className = 'fly-icon';
+        icon.style.left = (originRect.left + originRect.width / 2 - 20) + 'px';
+        icon.style.top  = (originRect.top  + originRect.height / 2 - 20) + 'px';
+        document.body.appendChild(icon);
+
+        const destX = (destRect.right - 30) - (originRect.left + originRect.width / 2 - 20);
+        const destY = (destRect.top + destRect.height / 2 - 20) - (originRect.top + originRect.height / 2 - 20);
+
+        const anim = icon.animate([
+            { transform: 'translate(0,0) scale(1)', opacity: 1 },
+            { transform: `translate(${destX * 0.5}px, ${destY * 0.2}px) scale(0.8)`, opacity: 1, offset: 0.4 },
+            { transform: `translate(${destX}px, ${destY}px) scale(0.1)`, opacity: 0 }
+        ], { duration: 650, easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)', fill: 'forwards' });
+
+        // Pop começa 80ms antes do fim da animação de voo
+        setTimeout(() => {
+            const cb = document.getElementById('cart-bar');
+            cb.animate([
+                { transform: 'translateX(-50%) scale(1)' },
+                { transform: 'translateX(-50%) scale(1.05)' },
+                { transform: 'translateX(-50%) scale(1)' }
+            ], { duration: 400, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' });
+        }, 570);
+
+        anim.onfinish = () => icon.remove();
+    }
+
+    // ── Alcohol bottle state ──
+    const alcLevels = [10, 15, 25, 35];
+    const BOTTLE_TOP = 72;
+    const BOTTLE_BOT = 150;
+    const BOTTLE_H   = BOTTLE_BOT - BOTTLE_TOP;
+    let alcStep = -1;
+    let coAlcStep = {};
+    let detailId   = null;
+    let detailLocalQty = 1;
+
+    function advanceCoAlcohol(key) {
+        const [id, pct] = key.split('_');
+        let currentStep = alcLevels.indexOf(parseInt(pct));
+        if (currentStep === -1) currentStep = 0;
+        const nextStep = (currentStep + 1) % alcLevels.length;
+        const nextPct = alcLevels[nextStep];
+
+        const qty = cart[key];
+        delete cart[key];
+        const newKey = id + '_' + nextPct;
+
+        // Substitui a chave no cartOrder na mesma posição
+        const idx = cartOrder.indexOf(key);
+        if (idx !== -1) cartOrder[idx] = newKey;
+        else cartOrder.push(newKey);
+
+        cart[newKey] = (cart[newKey] || 0) + qty;
+
+        renderCheckout();
+        updateTotals();
+    }
+
+    function advanceAlcohol() {
+        alcStep = (alcStep + 1) % alcLevels.length;
+        const pct = alcLevels[alcStep];
+        // fill from bottom: fillH = pct/100 * BOTTLE_H (capped at 100% = BOTTLE_H)
+        const fillH = Math.round((pct / 100) * BOTTLE_H);
+        const newY  = BOTTLE_BOT - fillH;
+
+        const rect  = document.getElementById('liquid-rect');
+        const shine = document.getElementById('liquid-shine');
+        rect.setAttribute('y', newY);
+        rect.setAttribute('height', fillH);
+        // shine: starts 4px below liquid surface, height = fillH * 0.55
+        const shineH = Math.round(fillH * 0.55);
+        shine.setAttribute('y', newY + 4);
+        shine.setAttribute('height', shineH);
+
+        document.getElementById('alc-pct').textContent = pct + '% vol.';
+
+        // bounce animation on SVG
+        const svg = document.getElementById('bottle-svg');
+        svg.style.transform = 'scale(1.12)';
+        setTimeout(() => { svg.style.transform = 'scale(1)'; }, 200);
+    }
+
+    function resetBottle() {
+        alcStep = 0; // mostra 10% de início, próximo clique vai pro 15%
+        const fillH = Math.round((10 / 100) * BOTTLE_H);
+        const newY  = BOTTLE_BOT - fillH;
+        const rect  = document.getElementById('liquid-rect');
+        const shine = document.getElementById('liquid-shine');
+        rect.setAttribute('y', newY);
+        rect.setAttribute('height', fillH);
+        shine.setAttribute('y', newY + 4);
+        shine.setAttribute('height', Math.round(fillH * 0.55));
+        document.getElementById('alc-pct').textContent = '10% vol.';
+    }
+
+    // ── Detail page ──
+    function openDetail(id) {
+        const p = produtos.find(x => x.id === id);
+        if (!p) return;
+        detailId = id;
+        detailLocalQty = 1;
+        document.getElementById('detail-qty-num').textContent = 1;
+        document.getElementById('detail-img').src   = p.img;
+        document.getElementById('detail-name').textContent = p.nome;
+        document.getElementById('detail-price').textContent = `R$ ${PRECO},00`;
+        document.getElementById('detail-desc').textContent  = p.desc;
+        resetBottle();
+        const dp = document.getElementById('detail-page');
+        dp.classList.add('open');
+        document.getElementById('detail-footer').style.display = 'flex';
+        document.getElementById('cart-bar').style.zIndex = '1400';
+    }
+
+    function closeDetail() {
+        if (detailId !== null) coAlcStep[detailId] = alcStep;
+        document.getElementById('detail-page').classList.remove('open');
+        document.getElementById('detail-footer').style.display = 'none';
+        document.getElementById('cart-bar').style.zIndex = '1000';
+        detailId = null;
+    }
+
+    function detailQtyChange(delta) {
+        detailLocalQty = Math.max(1, detailLocalQty + delta);
+        document.getElementById('detail-qty-num').textContent = detailLocalQty;
+    }
+
+    function detailAddToCart() {
+        if (detailId === null) return;
+        coAlcStep[detailId] = alcStep;
+        const pct = alcLevels[alcStep >= 0 ? alcStep : 0];
+        const key = detailId + '_' + pct;
+        if (!cart[key] && !cartOrder.includes(key)) cartOrder.push(key);
+        cart[key] = (cart[key] || 0) + detailLocalQty;
+
+        // Anima ícone voando da imagem do detalhe até a sacola
+        const p = produtos.find(x => x.id === detailId);
+        const imgEl = document.getElementById('detail-img');
+        if (p && imgEl) flyToCart(p.img, imgEl);
+
+        renderVitrine();
+        renderCheckout();
+        updateTotals();
+        closeDetail();
+    }
+
+    // ── Vitrine ──
+    function setModo(m) {
+        modo = m;
+        document.getElementById('btn-entrega').classList.toggle('active', m === 'entrega');
+        document.getElementById('btn-retirada').classList.toggle('active', m === 'retirada');
+        document.getElementById('campos-entrega').style.display = m === 'entrega' ? 'block' : 'none';
+        document.getElementById('campos-retirada').style.display = m === 'retirada' ? 'block' : 'none';
+        const bloco = document.getElementById('campos-' + m);
+        bloco.classList.remove('fields-block');
+        void bloco.offsetWidth;
+        bloco.classList.add('fields-block');
+        updateTotals();
+        checkForm();
+    }
+
+    function renderVitrine() {
+        const grid = document.getElementById('grid');
+        grid.innerHTML = '';
+        produtos.forEach(p => {
+            // soma qtd de todas as chaves deste produto (diferentes teores)
+            const qty = Object.keys(cart).filter(k => k.startsWith(p.id + '_')).reduce((s, k) => s + cart[k], 0);
+            const card = document.createElement('div');
+            card.className = 'liqueur-card';
+            card.innerHTML = `
+                <div class="image-container" style="cursor:pointer" data-id="${p.id}">
+                    <img src="${p.img}" alt="${p.nome}">
+                </div>
+                <p class="liqueur-name" style="cursor:pointer" data-id="${p.id}">${p.nome}</p>
+                <p class="liqueur-price">R$ ${PRECO},00</p>
+                <div class="card-actions">
+                    <div class="qty-wrapper">
+                        <button class="btn-qty-action" data-delta="-1" data-id="${p.id}">-</button>
+                        <span class="qty-num">${qty}</span>
+                        <button class="btn-qty-action" data-delta="1" data-id="${p.id}">+</button>
+                    </div>
+                    <button class="btn-info" data-id="${p.id}">Saiba+</button>
+                </div>`;
+            grid.appendChild(card);
+        });
+
+        // Delegated events — sem once:true pra não perder ao voltar sem adicionar
+        grid._handler && grid.removeEventListener('click', grid._handler);
+        grid._handler = function(e) {
+            const qtyBtn = e.target.closest('.btn-qty-action');
+            if (qtyBtn) {
+                e.stopPropagation();
+                const id = +qtyBtn.dataset.id;
+                const delta = +qtyBtn.dataset.delta;
+                if (delta > 0) {
+                    const p = produtos.find(x => x.id === id);
+                    const imgEl = qtyBtn.closest('.liqueur-card').querySelector('img');
+                    if (p && imgEl) flyToCart(p.img, imgEl);
+                }
+                updateQty(id, delta);
+                return;
+            }
+            const infoBtn = e.target.closest('.btn-info');
+            if (infoBtn) { openDetail(+infoBtn.dataset.id); return; }
+            const trig = e.target.closest('[data-id]');
+            if (trig && !e.target.closest('.qty-wrapper') && !e.target.closest('.btn-qty-action')) {
+                openDetail(+trig.dataset.id);
+            }
+        };
+        grid.addEventListener('click', grid._handler);
+    }
+
+    function updateQty(key, delta) {
+        // Na vitrine, key é o id numérico do produto — usa a primeira chave existente ou cria com 10%
+        if (typeof key === 'number' || !String(key).includes('_')) {
+            const id = String(key);
+            // Procura chave existente deste produto no carrinho
+            const existing = cartOrder.find(k => k.startsWith(id + '_'));
+            if (existing) {
+                key = existing;
+            } else {
+                key = id + '_10';
+            }
+        }
+        key = String(key);
+        const wasNew = !cart[key];
+        cart[key] = (cart[key] || 0) + delta;
+        if (cart[key] <= 0) {
+            delete cart[key];
+            cartOrder = cartOrder.filter(k => k !== key);
+        } else if (wasNew && !cartOrder.includes(key)) {
+            cartOrder.push(key);
+        }
+        renderVitrine();
+        renderCheckout();
+        updateTotals();
+    }
+
+    function updateTotals() {
+        const totalQty = Object.values(cart).reduce((a, b) => a + b, 0);
+        const subtotal = totalQty * PRECO;
+        const frete = (modo === 'entrega' && totalQty > 0) ? FRETE : 0;
+        const total = subtotal + frete;
+        const fmt = v => `R$ ${v.toFixed(2).replace('.', ',')}`;
+        document.getElementById('cart-count').innerText = totalQty;
+        document.getElementById('cart-total').innerText = fmt(subtotal);
+        document.getElementById('s-total').innerText = fmt(total);
+        document.getElementById('cart-bar').style.display = totalQty > 0 ? 'flex' : 'none';
+    }
+
+    function renderCheckout() {
+        const list = document.getElementById('checkout-items');
+        list.innerHTML = '';
+        cartOrder.filter(key => cart[key]).forEach(key => {
+            const [id, pct] = key.split('_');
+            const p = produtos.find(item => item.id == id);
+            const fillH = Math.round((parseInt(pct) / 100) * BOTTLE_H);
+            const rectY = BOTTLE_BOT - fillH;
+            list.innerHTML += `
+                <div style="background:white; border-radius:15px; padding:10px 12px; margin-bottom:10px; display:flex; align-items:center; justify-content:space-between; border: 1px solid #eee;">
+                    <div style="display:flex; align-items:center; gap:10px; flex:1;">
+                        <img src="${p.img}" style="width:45px; height:45px; border-radius:8px; object-fit:cover; flex-shrink:0;">
+                        <div>
+                            <p style="font-weight:700; color:var(--color-black); margin:0; font-size:0.95rem; line-height:1.2;">${p.nome}</p>
+                            <p style="color:var(--color-burgundy); font-weight:800; font-size:0.85rem; margin:0; line-height:1.2;">R$ ${PRECO},00</p>
+                        </div>
+                    </div>
+                    <!-- Garrafa centralizada entre texto e contador -->
+                    <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; flex-shrink:0; padding: 0 12px; cursor:pointer;" onclick="advanceCoAlcohol('${key}')">
+                        <svg id="co-svg-${key}" width="20" height="44" viewBox="0 0 72 160" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform:rotate(4deg); transition: transform 0.2s;">
+                            <defs>
+                                <clipPath id="co-clip-${key}">
+                                    <path d="M28 14 L28 38 Q14 50 12 72 L12 136 Q12 148 24 150 L48 150 Q60 148 60 136 L60 72 Q58 50 44 38 L44 14 Z"/>
+                                </clipPath>
+                                <linearGradient id="co-grad-${key}" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#8B1A2A" stop-opacity="0.7"/>
+                                    <stop offset="100%" stop-color="#49111C" stop-opacity="0.95"/>
+                                </linearGradient>
+                            </defs>
+                            <rect id="co-rect-${key}" x="0" y="${rectY}" width="72" height="${fillH}" fill="url(#co-grad-${key})" clip-path="url(#co-clip-${key})"/>
+                            <path d="M28 14 L28 38 Q14 50 12 72 L12 136 Q12 148 24 150 L48 150 Q60 148 60 136 L60 72 Q58 50 44 38 L44 14 Z" fill="rgba(255,255,255,0.08)" stroke="#49111C" stroke-width="2.5"/>
+                            <rect x="27" y="6" width="18" height="10" rx="3" fill="rgba(255,255,255,0.08)" stroke="#49111C" stroke-width="2"/>
+                            <rect x="29" y="2" width="14" height="7" rx="3" fill="#49111C"/>
+                            <rect x="16" y="90" width="40" height="28" rx="4" fill="rgba(255,255,255,0.55)" stroke="rgba(73,17,28,0.2)" stroke-width="1"/>
+                            <text x="36" y="102" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="7" font-weight="800" fill="#49111C">LICOR</text>
+                            <text x="36" y="112" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="6" fill="#49111C" opacity="0.7">DA CIDA</text>
+                        </svg>
+                        <span id="co-pct-${key}" style="font-size:0.6rem; font-weight:800; color:var(--color-burgundy); white-space:nowrap;">${pct}%vol</span>
+                    </div>
+                    <div style="display:flex; align-items:center; background:#f5f5f5; border-radius:10px;">
+                        <button onclick="updateQty('${key}', -1)" style="border:none; padding:8px 12px; background:none; font-weight:bold; color:var(--color-black); cursor:pointer;">-</button>
+                        <span style="font-weight:700; min-width:20px; text-align:center; color:var(--color-black);">${cart[key]}</span>
+                        <button onclick="updateQty('${key}', 1)" style="border:none; padding:8px 12px; background:none; font-weight:bold; color:var(--color-black); cursor:pointer;">+</button>
+                    </div>
+                </div>`;
+        });
+        checkForm();
+    }
+
+    function togglePages() {
+        const checkout = document.getElementById('checkout-page');
+        checkout.style.display = checkout.style.display === 'flex' ? 'none' : 'flex';
+        if (checkout.style.display === 'flex') renderCheckout();
+    }
+
+    function checkForm() {
+        const btn = document.getElementById('btn-finalizar');
+        if (!btn) return;
+        let ok = false;
+        if (modo === 'entrega') {
+            const nome = document.getElementById('c-name').value.trim();
+            const addr = document.getElementById('c-addr').value.trim();
+            const num  = document.getElementById('c-num').value.trim();
+            ok = nome && addr && num;
+        } else {
+            const nome = document.getElementById('r-name').value.trim();
+            const tel  = document.getElementById('r-tel').value.trim();
+            ok = nome && tel;
+        }
+        btn.disabled = !ok;
+        btn.style.cursor = ok ? 'pointer' : 'not-allowed';
+        btn.style.opacity = '1';
+        const waSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white" style="flex-shrink:0;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>';
+        if (ok) {
+            const wasInactive = btn.style.background === 'rgb(170, 170, 170)' || btn.style.background === '#aaa';
+            btn.style.background = '#25D366';
+            btn.style.whiteSpace = 'nowrap';
+            btn.innerHTML = waSVG + ' Finalizar via WhatsApp';
+            if (wasInactive) {
+                btn.classList.remove('activated');
+                void btn.offsetWidth; // reflow para reiniciar animação
+                btn.classList.add('activated');
+            }
+        } else {
+            btn.style.background = '#aaa';
+            btn.style.whiteSpace = 'nowrap';
+            btn.innerHTML = waSVG + ' Preencha os dados';
+        }
+    }
+
+    function enviarWhatsApp() {
+        const totalQty = Object.values(cart).reduce((a, b) => a + b, 0);
+        const subtotal = totalQty * PRECO;
+        const frete = (modo === 'entrega') ? FRETE : 0;
+        const total = subtotal + frete;
+        let nome, extra, obs = '';
+        if (modo === 'entrega') {
+            nome = document.getElementById('c-name').value.trim();
+            const addr = document.getElementById('c-addr').value.trim();
+            const num  = document.getElementById('c-num').value.trim();
+            obs        = document.getElementById('c-obs').value.trim();
+            if (!nome || !addr || !num) return;
+            extra = `*Endereço:* ${addr}, N° ${num}`;
+        } else {
+            nome = document.getElementById('r-name').value.trim();
+            const tel = document.getElementById('r-tel').value.trim();
+            if (!nome || !tel) return;
+            extra = `*Telefone:* ${tel}\n*Retirada na loja*`;
+        }
+        let msg = `*PEDIDO - LICOR DA CIDA*\n\n*Cliente:* ${nome}\n${extra}\n\n*ITENS:*\n`;
+        Object.keys(cart).forEach(key => {
+            const [id, pct] = key.split('_');
+            const p = produtos.find(i => i.id == id);
+            msg += `- ${cart[key]}x ${p.nome} (${pct}% vol.) = R$ ${(cart[key] * PRECO).toFixed(2).replace('.', ',')}\n`;
+        });
+        if (obs) msg += `\n*Obs:* ${obs}`;
+        msg += `\n\n*Subtotal:* R$ ${subtotal.toFixed(2).replace('.', ',')}`;
+        if (frete) msg += `\n*Frete:* R$ ${frete.toFixed(2).replace('.', ',')}`;
+        msg += `\n*TOTAL: R$ ${total.toFixed(2).replace('.', ',')}*`;
+        window.open(`https://wa.me/5574988037555?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    window.onload = renderVitrine;
+</script>
+</body>
+</html>
