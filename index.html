@@ -46,10 +46,63 @@
             display: grid; grid-template-columns: repeat(2, 1fr); 
             gap: 15px; padding: 20px 15px 140px 15px; 
         }
+
+        /* Card featured (Abacaxi) — mesmo tamanho dos outros mas com overlay */
+        .liqueur-card.featured {
+            padding: 0;
+            overflow: hidden;
+            position: relative;
+            height: 100%;
+            min-height: 220px;
+            background: #111;
+        }
+        .liqueur-card.featured .feat-img {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 120%;
+            object-fit: cover;
+            object-position: center top;
+            display: block;
+            transform: translateY(-25%);
+        }
+        .liqueur-card.featured .feat-gradient {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            height: 48%;
+            background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.95) 50%, rgba(0,0,0,0) 100%);
+            pointer-events: none;
+        }
+        .liqueur-card.featured .feat-content {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 12px;
+        }
+        .liqueur-card.featured .feat-name {
+            color: white; font-weight: 800; font-size: 1rem;
+            margin: 0 0 1px; line-height: 1.1; cursor: pointer;
+        }
+        .liqueur-card.featured .feat-price {
+            color: #F5C542; font-weight: 900; font-size: 0.95rem;
+            margin: 0 0 8px;
+        }
+        .liqueur-card.featured .card-actions { display: flex; align-items: center; gap: 6px; }
+        .liqueur-card.featured .qty-wrapper {
+            background: rgba(255,255,255,0.15);
+            border: none;
+            backdrop-filter: blur(6px);
+            width: 62%; flex: unset;
+            border-radius: 999px;
+        }
+        .liqueur-card.featured .qty-num { color: white; }
+        .liqueur-card.featured .btn-qty-action { color: white; }
+        .liqueur-card.featured .btn-info {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(6px);
+            border: none;
+            color: white; width: 38%;
+            border-radius: 999px;
+        }
         
         .liqueur-card { 
             background: var(--bg-card); border-radius: var(--border-radius); 
-            padding: 12px; box-shadow: 0 6px 15px rgba(0,0,0,0.06);
+            padding: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.12);
             display: flex; flex-direction: column; border: 1px solid rgba(255,255,255,0.8);
         }
 
@@ -79,10 +132,9 @@
         /* Checkout Page */
         #checkout-page { 
             display: none; flex-direction: column; height: 100vh; position: fixed; 
-            top: 0; left: 50%; transform: translateX(-50%);
-            width: 100%; max-width: 430px; background: var(--color-offwhite); z-index: 2000; 
+            top: 0; width: 100%; max-width: 430px; background: var(--color-offwhite); z-index: 2000; 
         }
-        .checkout-scroll-area { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 20px; min-height: 0; }
+        .checkout-scroll-area { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 120px; }
         .form-input { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #ddd; margin-bottom: 10px; font-size: 1rem; background: white; outline: none; }
         .form-input:focus { border-color: var(--color-burgundy); }
         .section-title { font-size: 0.85rem; font-weight: 800; color: var(--color-burgundy); text-transform: uppercase; margin: 20px 0 10px 0; }
@@ -112,7 +164,7 @@
 
         /* Rodapé Fixo no Checkout */
         .checkout-footer {
-            flex-shrink: 0;
+            position: absolute; bottom: 0; width: 100%;
             background: white; padding: 20px;
             box-shadow: 0 -10px 20px rgba(0,0,0,0.05);
             display: flex; align-items: center; justify-content: space-between; gap: 15px;
@@ -302,10 +354,10 @@
         width: 100%; max-width: 430px; height: 100vh;
         background: #0A0908;
         z-index: 9999; display: flex; flex-direction: column;
-        align-items: center; justify-content: center; gap: 16px;
+        align-items: center; justify-content: center; gap: 4px;
         transition: opacity 0.4s;
     }
-    .ls-scene { width: 280px; height: 280px; position: relative; }
+    .ls-scene { width: 210px; height: 210px; position: relative; }
     .ls-scene svg { width: 100%; height: 100%; display: block; }
 
     .ls-stream {
@@ -447,55 +499,59 @@
                 <i class="fas fa-wine-bottle"></i>
                 <span class="logo-text-span">LICOR DA CIDA</span>
             </div>
-            <button class="btn-info" style="width: auto; padding: 0 12px; font-size: 0.55rem;" onclick="document.getElementById('sobre-modal').style.display='flex'">Sobre</button>
+            <button class="btn-info" style="width: auto; padding: 0 16px; font-size: 0.55rem; border-radius: 999px;" onclick="document.getElementById('sobre-modal').style.display='flex'">Sobre</button>
         </header>
         <div class="liqueur-grid" id="grid"></div>
     </div>
 
     <!-- ══ MODAL SOBRE ══ -->
-    <div id="sobre-modal" style="display:none; position:fixed; top:0; left:50%; transform:translateX(-50%); width:100%; max-width:430px; height:100vh; background:var(--color-offwhite); z-index:3000; overflow-y:auto; flex-direction:column;">
-        <div style="padding:20px 20px 40px; box-sizing:border-box;">
+    <div id="sobre-modal" style="display:none; position:fixed; top:0; left:50%; transform:translateX(-50%); width:100%; max-width:430px; height:100vh; background:var(--color-offwhite); z-index:3000; overflow:hidden; flex-direction:column;">
+        <div style="padding:14px 16px 16px; box-sizing:border-box; height:100vh; display:flex; flex-direction:column; justify-content:space-between;">
             <!-- Header -->
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; padding-top:8px;">
-                <button onclick="document.getElementById('sobre-modal').style.display='none'" style="background:var(--color-black); color:white; border:none; width:35px; height:35px; border-radius:10px; cursor:pointer; display:flex; align-items:center; justify-content:center;"><i class="fas fa-arrow-left"></i></button>
-                <h2 style="font-size:1.1rem; font-weight:900; color:var(--color-black); margin:0;">SOBRE NÓS</h2>
-                <div style="width:35px;"></div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <button onclick="document.getElementById('sobre-modal').style.display='none'" style="background:var(--color-black); color:white; border:none; width:32px; height:32px; border-radius:10px; cursor:pointer; display:flex; align-items:center; justify-content:center;"><i class="fas fa-arrow-left"></i></button>
+                <h2 style="font-size:1rem; font-weight:900; color:var(--color-black); margin:0;">SOBRE NÓS</h2>
+                <div style="width:32px;"></div>
             </div>
 
             <!-- Funcionamento -->
-            <div style="background:white; border-radius:16px; padding:16px; margin-bottom:12px; border:1px solid #eee;">
-                <p style="font-weight:800; color:var(--color-burgundy); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:8px;">🕐 Funcionamento</p>
-                <p style="margin:0 0 4px; font-size:0.9rem; color:var(--color-black);"><strong>Segunda a Sexta:</strong> 09h às 18h</p>
-                <p style="margin:0; font-size:0.9rem; color:var(--color-black);"><strong>Sábado:</strong> 09h às 13h</p>
+            <div style="background:white; border-radius:14px; padding:12px 14px; margin-bottom:8px; border:1px solid #eee;">
+                <p style="font-weight:800; color:var(--color-burgundy); font-size:0.72rem; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px;">🕐 Funcionamento</p>
+                <p style="margin:0 0 2px; font-size:0.82rem; color:var(--color-black);"><strong>Segunda a Sexta:</strong> 09h às 18h</p>
+                <p style="margin:0; font-size:0.82rem; color:var(--color-black);"><strong>Sábado:</strong> 09h às 13h</p>
             </div>
 
             <!-- Qualidade -->
-            <div style="background:white; border-radius:16px; padding:16px; margin-bottom:12px; border:1px solid #eee;">
-                <p style="font-weight:800; color:var(--color-burgundy); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:8px;">🏆 Qualidade e Compromisso</p>
-                <p style="margin:0; font-size:0.88rem; color:#555; line-height:1.6;">Com anos de experiência no setor, construímos uma reputação sólida baseada na transparência, ética e no respeito aos prazos e acordos. Seja qual for sua necessidade em Licor, temos a estrutura e o conhecimento técnico para resolver com eficiência.</p>
+            <div style="background:white; border-radius:14px; padding:12px 14px; margin-bottom:8px; border:1px solid #eee;">
+                <p style="font-weight:800; color:var(--color-burgundy); font-size:0.72rem; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px;">🏆 Qualidade e Compromisso</p>
+                <p style="margin:0; font-size:0.78rem; color:#555; line-height:1.45;">Com anos de experiência, construímos uma reputação sólida baseada na transparência, ética e respeito aos prazos. Temos estrutura e conhecimento técnico para resolver com eficiência.</p>
             </div>
 
             <!-- Onde Encontrar -->
-            <div style="background:white; border-radius:16px; padding:16px; margin-bottom:12px; border:1px solid #eee;">
-                <p style="font-weight:800; color:var(--color-burgundy); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:8px;">📍 Onde Encontrar</p>
-                <p style="margin:0 0 12px; font-size:0.88rem; color:#555; line-height:1.6;">R. Manoel Cláudio do Nascimento, 66 - Alto da Maravilha, Juazeiro - BA, 48900-387</p>
+            <div style="background:white; border-radius:14px; padding:12px 14px; margin-bottom:8px; border:1px solid #eee; flex:1; display:flex; flex-direction:column;">
+                <p style="font-weight:800; color:var(--color-burgundy); font-size:0.72rem; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">📍 Onde Encontrar</p>
+                <p style="margin:0 0 8px; font-size:0.78rem; color:#555; line-height:1.4;">R. Manoel Cláudio do Nascimento, 66 - Alto da Maravilha, Juazeiro - BA</p>
                 <!-- Mapa -->
-                <div style="border-radius:12px; overflow:hidden; height:180px; margin-bottom:12px;">
+                <div style="border-radius:10px; overflow:hidden; flex:1; min-height:100px; margin-bottom:8px;">
                     <iframe
                         src="https://www.google.com/maps?q=R.+Manoel+Cl%C3%A1udio+do+Nascimento,+66,+Juazeiro,+BA,+Brasil&output=embed"
-                        width="100%" height="180" style="border:0; display:block;"
+                        width="100%" height="100%" style="border:0; display:block; min-height:100px;"
                         allowfullscreen loading="lazy">
                     </iframe>
                 </div>
-                <!-- Botões WhatsApp e Instagram -->
-                <div style="display:flex; gap:10px;">
-                    <a href="https://wa.me/5574988037555" target="_blank" style="flex:1; display:flex; align-items:center; justify-content:center; gap:8px; background:#25D366; color:white; border-radius:12px; padding:12px; font-weight:800; font-size:0.85rem; text-decoration:none;">
-                        <i class="fab fa-whatsapp" style="font-size:1.1rem;"></i> WhatsApp
+                <!-- Botões WA e IG -->
+                <div style="display:flex; gap:8px; margin-bottom:8px;">
+                    <a href="https://wa.me/5574988037555" target="_blank" style="flex:1; display:flex; align-items:center; justify-content:center; gap:6px; background:#25D366; color:white; border-radius:10px; padding:10px; font-weight:800; font-size:0.8rem; text-decoration:none;">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
                     </a>
-                    <a href="https://instagram.com/" target="_blank" style="flex:1; display:flex; align-items:center; justify-content:center; gap:8px; background:linear-gradient(135deg,#f58529,#dd2a7b,#8134af); color:white; border-radius:12px; padding:12px; font-weight:800; font-size:0.85rem; text-decoration:none;">
-                        <i class="fab fa-instagram" style="font-size:1.1rem;"></i> Instagram
+                    <a href="https://instagram.com/" target="_blank" style="flex:1; display:flex; align-items:center; justify-content:center; gap:6px; background:linear-gradient(135deg,#f58529,#dd2a7b,#8134af); color:white; border-radius:10px; padding:10px; font-weight:800; font-size:0.8rem; text-decoration:none;">
+                        <i class="fab fa-instagram"></i> Instagram
                     </a>
                 </div>
+                <!-- Botão criar site -->
+                <a href="https://oiigor.vercel.app/" target="_blank" style="display:flex; align-items:center; justify-content:center; gap:8px; background:var(--color-black); color:white; border-radius:10px; padding:11px; font-weight:800; font-size:0.8rem; text-decoration:none;">
+                    <i class="fas fa-code"></i> Quero criar um site assim
+                </a>
             </div>
         </div>
     </div>
@@ -634,25 +690,25 @@
 
 <script>
     const produtos = [
-        { id: 0, nome: "Abacaxi", img: "https://res.cloudinary.com/dwrq06fta/image/upload/q_auto/f_auto/v1776601762/Pineapple_sliced_on_202604190919_am1re0.jpg",
+        { id: 0, nome: "Abacaxi", img: "https://res.cloudinary.com/dwrq06fta/image/upload/v1777334953/Amplie_para_propor%C3%A7%C3%A3o_202604272102_c1jyoj.jpg",
           desc: "Um licor tropical refrescante, feito com abacaxi maduro selecionado, cachaça artesanal e açúcar demerara. O resultado é uma bebida dourada, equilibrada entre o doce e o ácido, com aroma irresistível de fruta fresca." },
-        { id: 1, nome: "Amarula", img: "https://res.cloudinary.com/dwrq06fta/image/upload/q_auto/f_auto/v1776603129/Liqueur_poured_into_202604190951_ug8asy.jpg",
+        { id: 1, nome: "Amarula", img: "https://res.cloudinary.com/dwrq06fta/image/upload/v1777334952/Tire_r%C3%B3tulo_da_202604272102_uwpy8o.jpg",
           desc: "Inspirado no clássico africano, este licor cremoso é preparado com leite condensado, creme de leite, cachaça suave e essência de baunilha. Aveludado, rico e perfeito para sobremesa ou puro." },
-        { id: 2, nome: "Maracujá", img: "https://res.cloudinary.com/dwrq06fta/image/upload/q_auto/f_auto/v1776601763/Garrafa_de_vidro_202604181526_pwiu9g.jpg",
+        { id: 2, nome: "Maracujá", img: "https://res.cloudinary.com/dwrq06fta/image/upload/v1777334965/Amplie_para_propor%C3%A7%C3%A3o_202604272103_5_qxmzug.jpg",
           desc: "Feito com polpa de maracujá fresco, cachaça envelhecida e açúcar cristal. Tem sabor intensamente azedo-adocicado, cor amarelo vibrante e aroma que lembra um suco natural recém-feito." },
-        { id: 3, nome: "Coco", img: "https://res.cloudinary.com/dwrq06fta/image/upload/q_auto/f_auto/v1776601766/Garrafa_com_l%C3%ADquido_202604181531_tkpp6w.jpg",
+        { id: 3, nome: "Coco", img: "https://res.cloudinary.com/dwrq06fta/image/upload/v1777334958/Amplie_para_propor%C3%A7%C3%A3o_202604272103_4_dyiiol.jpg",
           desc: "Preparado com coco ralado fresco, leite de coco artesanal e cachaça leve. Tem textura levemente cremosa, sabor tropical e adocicado, remetendo às praias brasileiras." },
-        { id: 4, nome: "Milho Verde", img: "https://res.cloudinary.com/dwrq06fta/image/upload/q_auto/f_auto/v1776601760/Fresh_corn_in_202604190921_y19d4y.jpg",
+        { id: 4, nome: "Milho Verde", img: "https://res.cloudinary.com/dwrq06fta/image/upload/v1777334965/Amplie_para_propor%C3%A7%C3%A3o_202604272103_1_h459t2.jpg",
           desc: "Uma receita inusitada e surpreendente: milho verde cozido, processado e infusionado com cachaça e açúcar. Sabor adocicado com notas terrosas, cor amarelo-palha e perfume de festa junina." },
-        { id: 5, nome: "Amendoim", img: "https://res.cloudinary.com/dwrq06fta/image/upload/q_auto/f_auto/v1776601762/Substituir_garrafa_imagem_202604181539_vzqmxn.jpg",
+        { id: 5, nome: "Amendoim", img: "https://res.cloudinary.com/dwrq06fta/image/upload/v1777334959/Amplie_para_propor%C3%A7%C3%A3o_202604272103_3_ogbpae.jpg",
           desc: "Amendoim torrado e moído, misturado com cachaça e açúcar mascavo. Tem sabor encorpado de amendoim com leve defumado natural, textura levemente densa e aroma que conquista." },
-        { id: 6, nome: "Tamarindo", img: "https://res.cloudinary.com/dwrq06fta/image/upload/q_auto/f_auto/v1776601760/Tamarind_pods_on_202604190924_rfip92.jpg",
+        { id: 6, nome: "Tamarindo", img: "https://res.cloudinary.com/dwrq06fta/image/upload/v1777334963/Amplie_para_propor%C3%A7%C3%A3o_202604272103_mbhczr.jpg",
           desc: "Feito com polpa de tamarindo, açúcar e cachaça artesanal. Sabor azedo e doce ao mesmo tempo, cor marrom-avermelhada e aroma exótico. Uma explosão de sabores em cada gole." },
-        { id: 7, nome: "Jenipapo", img: "https://res.cloudinary.com/dwrq06fta/image/upload/q_auto/f_auto/v1776601759/Jenipapo_fruits_on_202604190926_sehye2.jpg",
+        { id: 7, nome: "Jenipapo", img: "https://res.cloudinary.com/dwrq06fta/image/upload/v1777334958/Amplie_para_propor%C3%A7%C3%A3o_202604272102_1_ljejl3.jpg",
           desc: "Fruto típico do Nordeste brasileiro, o jenipapo dá origem a um licor escuro, de sabor único: levemente adstringente, adocicado e com notas terrosas. Tradição nordestina em garrafa." },
-        { id: 8, nome: "Cappuccino", img: "https://res.cloudinary.com/dwrq06fta/image/upload/q_auto/f_auto/v1776601767/Diminua_o_tamanho_202604181548_f6urog.jpg",
+        { id: 8, nome: "Cappuccino", img: "https://res.cloudinary.com/dwrq06fta/image/upload/v1777334964/Amplie_para_propor%C3%A7%C3%A3o_202604272103_2_cnlqe7.jpg",
           desc: "Café expresso, canela, creme de leite e cachaça se encontram para criar um licor cremoso e aromático. Perfeito após o jantar, com sorvete ou simplesmente puro, bem gelado." },
-        { id: 9, nome: "Menta", img: "https://res.cloudinary.com/dwrq06fta/image/upload/q_auto/f_auto/v1776601765/Garra_com_l%C3%ADquido_202604181543_ntlhae.jpg",
+        { id: 9, nome: "Menta", img: "https://res.cloudinary.com/dwrq06fta/image/upload/v1777334965/Amplie_para_a_202604272103_r5fips.jpg",
           desc: "Folhas de hortelã frescas, maceradas em cachaça por dias, com açúcar e essência natural de menta. Cor verde intensa, aroma refrescante e sabor que refresca o paladar." }
     ];
 
@@ -841,23 +897,26 @@
         const grid = document.getElementById('grid');
         grid.innerHTML = '';
         produtos.forEach(p => {
-            // soma qtd de todas as chaves deste produto (diferentes teores)
             const qty = Object.keys(cart).filter(k => k.startsWith(p.id + '_')).reduce((s, k) => s + cart[k], 0);
             const card = document.createElement('div');
-            card.className = 'liqueur-card';
+
+            // Todos os cards são featured
+            card.className = 'liqueur-card featured';
+            card.dataset.id = p.id;
             card.innerHTML = `
-                <div class="image-container" style="cursor:pointer" data-id="${p.id}">
-                    <img src="${p.img}" alt="${p.nome}">
-                </div>
-                <p class="liqueur-name" style="cursor:pointer" data-id="${p.id}">${p.nome}</p>
-                <p class="liqueur-price">R$ ${PRECO},00</p>
-                <div class="card-actions">
-                    <div class="qty-wrapper">
-                        <button class="btn-qty-action" data-delta="-1" data-id="${p.id}">-</button>
-                        <span class="qty-num">${qty}</span>
-                        <button class="btn-qty-action" data-delta="1" data-id="${p.id}">+</button>
+                <img class="feat-img" src="${p.img}" alt="${p.nome}">
+                <div class="feat-gradient"></div>
+                <div class="feat-content">
+                    <p class="feat-name" data-id="${p.id}">${p.nome}</p>
+                    <p class="feat-price">R$ ${PRECO},00</p>
+                    <div class="card-actions">
+                        <div class="qty-wrapper">
+                            <button class="btn-qty-action" data-delta="-1" data-id="${p.id}">-</button>
+                            <span class="qty-num">${qty}</span>
+                            <button class="btn-qty-action" data-delta="1" data-id="${p.id}">+</button>
+                        </div>
+                        <button class="btn-info" data-id="${p.id}">Saiba+</button>
                     </div>
-                    <button class="btn-info" data-id="${p.id}">Saiba+</button>
                 </div>`;
             grid.appendChild(card);
         });
