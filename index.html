@@ -7,157 +7,212 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --color-black: #0A0908;
+            --navy: #1E2235;
+            --navy-card: #252A3E;
+            --navy-light: #2E3450;
+            --pink: #F08080;
+            --pink-light: #FFF9C4;
+            --accent: #FFD600;
             --color-burgundy: #49111C;
-            --color-offwhite: #F2F4F3;
-            --bg-app: #D1D5D6; 
-            --bg-card: #FFFFFF;
-            --text-primary: var(--color-black);
-            --border-radius: 20px;
-            --btn-height: 28px; 
+            --color-offwhite: #1E2235;
+            --color-black: #0A0908;
+            --bg-app: #1E2235;
+            --bg-card: #252A3E;
+            --text-primary: #FFFFFF;
+            --text-muted: rgba(255,255,255,0.5);
+            --border-radius: 22px;
+            --btn-height: 32px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: #b8bcbd; display: flex; justify-content: center; min-height: 100vh; }
+        body { background-color: #151929; display: flex; justify-content: center; min-height: 100vh; }
 
-        .app-container { 
-            width: 100%; max-width: 430px; 
-            background-color: var(--bg-app); 
-            min-height: 100vh; 
-            position: relative; 
-            display: flex; 
-            flex-direction: column; 
+        .app-container {
+            width: 100%; max-width: 430px;
+            background-color: #1E2235;
+            min-height: 100vh; position: relative;
+            display: flex; flex-direction: column;
         }
 
-        header { 
+        header {
             position: sticky; top: 0; z-index: 100;
-            display: flex; justify-content: space-between; align-items: center; 
-            padding: 8px 18px; height: 56px;
-            background-color: rgba(242, 244, 243, 0.3); 
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-        }
-        
-        .header-logo-text { display: flex; align-items: center; gap: 8px; }
-        .header-logo-text i { color: var(--color-black); font-size: 1.45rem; }
-        .logo-text-span { font-weight: 900; letter-spacing: 0.5px; font-size: 0.8rem; color: var(--color-black); }
-
-        .liqueur-grid { 
-            display: grid; grid-template-columns: repeat(2, 1fr); 
-            gap: 15px; padding: 20px 15px 140px 15px; 
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 14px 20px; height: 62px;
+            background-color: #1E2235;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
         }
 
-        /* Card featured (Abacaxi) — mesmo tamanho dos outros mas com overlay */
+        .header-logo-text { display: flex; align-items: center; gap: 10px; }
+        .header-logo-text i { color: #FFD600; font-size: 1.4rem; }
+        .logo-text-span { font-weight: 900; letter-spacing: 1px; font-size: 0.85rem; color: white; text-transform: uppercase; }
+
+        .liqueur-grid {
+            display: flex; flex-direction: column;
+            gap: 14px; padding: 16px 16px 100px 16px;
+        }
+
+        /* ── CARD ── */
         .liqueur-card.featured {
-            padding: 0;
-            overflow: hidden;
-            position: relative;
-            height: 100%;
-            min-height: 220px;
-            background: #111;
+            display: flex; flex-direction: row;
+            overflow: hidden; position: relative;
+            height: auto; min-height: 128px; max-height: 170px;
+            background: #252A3E;
+            border-radius: 20px;
+            flex-shrink: 0;
         }
+        /* Foto lateral esquerda com fundo rosa */
+        .liqueur-card.featured::before { display: none; }
         .liqueur-card.featured .feat-img {
-            position: absolute; top: 0; left: 0;
-            width: 100%; height: 120%;
-            object-fit: cover;
-            object-position: center top;
-            display: block;
-            transform: translateY(-25%);
+            position: relative; top: unset; left: unset;
+            width: 160px; min-width: 160px; height: 100%;
+            object-fit: cover; object-position: center;
+            display: block; z-index: 1;
+            border-radius: 20px;
+            background: #FFF9C4;
         }
-        .liqueur-card.featured .feat-gradient {
-            position: absolute; bottom: 0; left: 0; right: 0;
-            height: 48%;
-            background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.95) 50%, rgba(0,0,0,0) 100%);
-            pointer-events: none;
+        /* wrapper da imagem com fundo rosa */
+        .liqueur-card.featured .feat-img-wrap {
+            width: 150px; min-width: 150px; min-height: 128px; max-height: 170px;
+            background: #FFF9C4;
+            border-radius: 20px;
+            overflow: hidden; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            align-self: stretch;
         }
+        .liqueur-card.featured .feat-img-wrap img {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+        .liqueur-card.featured .feat-gradient { display: none; }
         .liqueur-card.featured .feat-content {
-            position: absolute; bottom: 0; left: 0; right: 0;
-            padding: 12px;
+            position: relative; bottom: unset; left: unset; right: unset;
+            flex: 1; padding: 8px 10px 8px 12px;
+            display: flex; flex-direction: column; justify-content: flex-start; gap: 4px;
+            z-index: 2;
         }
+        .liqueur-card.featured .feat-top { display: flex; flex-direction: column; gap: 2px; flex: 1; justify-content: flex-start; }
         .liqueur-card.featured .feat-name {
-            color: white; font-weight: 800; font-size: 1rem;
-            margin: 0 0 1px; line-height: 1.1; cursor: pointer;
+            color: white; font-weight: 800; font-size: 1.09rem;
+            margin: 0 0 2px; line-height: 1.1; cursor: pointer;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .liqueur-card.featured .feat-desc {
+            color: rgba(255,255,255,0.45); font-size: 0.68rem;
+            margin: 0; line-height: 1.25;
+            display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+            overflow: hidden;
         }
         .liqueur-card.featured .feat-price {
-            color: #F5C542; font-weight: 900; font-size: 0.95rem;
-            margin: 0 0 8px;
+            color: white; font-weight: 900; font-size: 1.05rem; margin: 0;
         }
-        .liqueur-card.featured .card-actions { display: flex; align-items: center; gap: 6px; }
+        .liqueur-card.featured .feat-price span {
+            font-size: 0.68rem; font-weight: 700; vertical-align: super; margin-right: 1px;
+        }
+        .liqueur-card.featured .feat-bottom {
+            display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-top: auto;
+        }
         .liqueur-card.featured .qty-wrapper {
-            background: rgba(255,255,255,0.15);
-            border: none;
-            backdrop-filter: blur(6px);
-            width: 62%; flex: unset;
-            border-radius: 999px;
+            display: flex; align-items: center;
+            background: rgba(255,255,255,0.08);
+            border: 1.5px solid rgba(255,255,255,0.15);
+            border-radius: 999px; height: 30px;
+            width: auto; flex: 1; max-width: 100px;
         }
-        .liqueur-card.featured .qty-num { color: white; }
-        .liqueur-card.featured .btn-qty-action { color: white; }
+        .liqueur-card.featured .qty-num { color: white; font-size: 0.85rem; }
+        .liqueur-card.featured .btn-qty-action { color: white; font-size: 0.9rem; }
         .liqueur-card.featured .btn-info {
-            background: rgba(255,255,255,0.2);
-            backdrop-filter: blur(6px);
-            border: none;
-            color: white; width: 38%;
-            border-radius: 999px;
-        }
-        
-        .liqueur-card { 
-            background: var(--bg-card); border-radius: var(--border-radius); 
-            padding: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.12);
-            display: flex; flex-direction: column; border: 1px solid rgba(255,255,255,0.8);
+            background: #FFD600; border: none; color: #1E2235;
+            border-radius: 999px; height: 30px;
+            padding: 0 12px;
+            font-size: 0.55rem; font-weight: 900;
+            display: flex; align-items: center; justify-content: center;
+            text-transform: uppercase; letter-spacing: 0.5px;
+            white-space: nowrap; flex-shrink: 0;
         }
 
-        .image-container { width: 100%; height: 110px; border-radius: 12px; overflow: hidden; margin-bottom: 10px; background: #f0f0f0; }
+        .liqueur-card {
+            background: #252A3E; border-radius: 20px;
+            padding: 12px; display: flex; flex-direction: column;
+        }
+
+        .image-container { width: 100%; height: 110px; border-radius: 14px; overflow: hidden; margin-bottom: 10px; background: #FFF9C4; }
         .image-container img { width: 100%; height: 100%; object-fit: cover; }
-        
-        .liqueur-name { color: var(--text-primary); font-weight: 700; font-size: 0.95rem; margin-bottom: 2px; }
-        .liqueur-price { color: var(--color-burgundy); font-weight: 900; margin-bottom: 12px; font-size: 1rem; }
+
+        .liqueur-name { color: white; font-weight: 700; font-size: 0.95rem; margin-bottom: 2px; }
+        .liqueur-price { color: white; font-weight: 900; margin-bottom: 12px; font-size: 1rem; }
 
         .card-actions { display: flex; align-items: center; justify-content: space-between; margin-top: auto; gap: 6px; }
 
-        .qty-wrapper { 
-            display: flex; align-items: center; 
-            background: #f5f5f5; border-radius: 8px; 
-            height: var(--btn-height); width: 62%; border: 1px solid #e0e0e0;
+        .qty-wrapper {
+            display: flex; align-items: center;
+            background: rgba(255,255,255,0.08); border-radius: 999px;
+            height: 32px; width: 62%; border: 1px solid rgba(255,255,255,0.1);
         }
-        .btn-qty-action { background: none; border: none; color: var(--color-black); flex: 1; height: 100%; font-size: 1rem; cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center; }
-        .qty-num { color: var(--color-black); font-weight: 700; min-width: 18px; text-align: center; font-size: 0.85rem; }
+        .btn-qty-action { background: none; border: none; color: white; flex: 1; height: 100%; font-size: 1rem; cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center; }
+        .qty-num { color: white; font-weight: 700; min-width: 18px; text-align: center; font-size: 0.85rem; }
 
-        .btn-info { 
-            background: var(--color-burgundy); border: none; color: white; 
-            height: var(--btn-height); width: 38%; border-radius: 8px; font-size: 0.52rem; 
-            font-weight: 800; text-transform: uppercase; cursor: pointer;
+        .btn-info {
+            background: #FFD600; border: none; color: white;
+            height: 32px; width: 38%; border-radius: 999px; font-size: 0.5rem;
+            font-weight: 900; text-transform: uppercase; cursor: pointer;
             display: flex; align-items: center; justify-content: center;
         }
 
+        /* ── FILTER NAV BAR ── */
+        .filter-nav {
+            position: sticky; top: 62px; z-index: 90;
+            display: flex; gap: 10px; padding: 10px 16px;
+            overflow-x: auto; background: #1E2235;
+            scrollbar-width: none;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .filter-nav::-webkit-scrollbar { display: none; }
+        .filter-btn {
+            flex-shrink: 0;
+            width: 38px; height: 38px; border-radius: 50%;
+            background: #2E3450;
+            border: 2px solid rgba(255,255,255,0.08); cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem; line-height: 1;
+            transition: transform 0.15s, background 0.15s, border-color 0.15s;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .filter-btn:active { transform: scale(0.88); }
+        .filter-btn.active { background: #FFD600; border-color: #FFD600; }
+
         /* Checkout Page */
-        #checkout-page { 
-            display: none; flex-direction: column; height: 100vh; position: fixed; 
-            top: 0; width: 100%; max-width: 430px; background: var(--color-offwhite); z-index: 2000; 
+        #checkout-page {
+            display: none; flex-direction: column; height: 100vh; position: fixed;
+            top: 0; width: 100%; max-width: 430px; background: #1E2235; z-index: 2000;
         }
         .checkout-scroll-area { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 120px; }
-        .form-input { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #ddd; margin-bottom: 10px; font-size: 1rem; background: white; outline: none; }
-        .form-input:focus { border-color: var(--color-burgundy); }
-        .section-title { font-size: 0.85rem; font-weight: 800; color: var(--color-burgundy); text-transform: uppercase; margin: 20px 0 10px 0; }
+        .form-input {
+            width: 100%; padding: 14px; border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.1); margin-bottom: 10px;
+            font-size: 1rem; background: #252A3E; outline: none; color: white;
+        }
+        .form-input::placeholder { color: rgba(255,255,255,0.3); }
+        .form-input:focus { border-color: #FFD600; }
+        .section-title { font-size: 0.85rem; font-weight: 800; color: #FFD600; text-transform: uppercase; margin: 20px 0 10px 0; }
 
         /* Delivery toggle */
         .delivery-toggle { display: flex; gap: 8px; margin-bottom: 14px; }
         .toggle-btn {
-            flex: 1; padding: 13px 8px; border-radius: 12px; border: 2px solid #ddd;
-            background: white; font-weight: 800; font-size: 0.82rem; cursor: pointer;
-            text-transform: uppercase; letter-spacing: 0.5px; color: #888;
+            flex: 1; padding: 13px 8px; border-radius: 14px; border: 2px solid rgba(255,255,255,0.1);
+            background: #252A3E; font-weight: 800; font-size: 0.82rem; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 0.5px; color: rgba(255,255,255,0.4);
             transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px;
         }
         .toggle-btn.active {
-            border-color: var(--color-burgundy); background: var(--color-burgundy);
-            color: white; box-shadow: 0 4px 12px rgba(73,17,28,0.25);
+            border-color: #FFD600; background: #FFD600;
+            color: #1E2235; box-shadow: 0 4px 16px rgba(255,214,0,0.3);
         }
         .addr-row { display: flex; gap: 8px; }
         .addr-row .form-input { flex: 1; margin-bottom: 10px; }
         .addr-row .form-input.num { flex: 0 0 80px; }
         .frete-badge {
-            background: #fff8e1; border: 1px solid #ffe082; border-radius: 10px;
+            background: rgba(255,214,0,0.12); border: 1px solid rgba(255,214,0,0.25); border-radius: 12px;
             padding: 10px 14px; margin-bottom: 10px; font-size: 0.82rem;
-            color: #e65100; font-weight: 700; display: flex; align-items: center; gap: 8px;
+            color: #FFD600; font-weight: 700; display: flex; align-items: center; gap: 8px;
         }
         .fields-block { animation: fadeSlide 0.22s ease; }
         @keyframes fadeSlide { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
@@ -165,16 +220,16 @@
         /* Rodapé Fixo no Checkout */
         .checkout-footer {
             position: absolute; bottom: 0; width: 100%;
-            background: white; padding: 20px;
-            box-shadow: 0 -10px 20px rgba(0,0,0,0.05);
+            background: #252A3E; padding: 20px;
+            border-top: 1px solid rgba(255,255,255,0.06);
             display: flex; align-items: center; justify-content: space-between; gap: 15px;
         }
         .total-container { display: flex; flex-direction: column; }
-        .total-label { font-size: 0.75rem; font-weight: 700; color: #777; text-transform: uppercase; }
-        .total-value { font-size: 1.3rem; font-weight: 900; color: var(--color-black); }
-        .btn-finish-whatsapp { 
-            flex: 1; background: #25D366; color: white; border: none; 
-            padding: 15px; border-radius: 15px; font-weight: 800; 
+        .total-label { font-size: 0.75rem; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; }
+        .total-value { font-size: 1.3rem; font-weight: 900; color: white; }
+        .btn-finish-whatsapp {
+            flex: 1; background: #FFD600; color: #1E2235; border: none;
+            padding: 15px; border-radius: 15px; font-weight: 800;
             font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
             white-space: nowrap;
             transition: background 0.5s ease, transform 0.3s ease, box-shadow 0.4s ease;
@@ -190,13 +245,9 @@
 
         /* ── FLYING ICON ANIMATION ── */
         .fly-icon {
-            position: fixed;
-            width: 40px; height: 40px;
-            border-radius: 8px;
-            object-fit: cover;
-            z-index: 9999;
-            pointer-events: none;
-            transition: none;
+            position: fixed; width: 40px; height: 40px;
+            border-radius: 8px; object-fit: cover;
+            z-index: 9999; pointer-events: none; transition: none;
         }
         @keyframes fly-to-cart {
             0%   { transform: scale(1); opacity: 1; }
@@ -205,43 +256,41 @@
         }
 
         /* Barra de Carrinho (Home) */
-        #cart-bar { 
-            position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); 
-            width: calc(100% - 30px); max-width: 400px; 
-            background: var(--color-black); color: white; 
-            padding: 18px; border-radius: 20px; display: none; 
-            justify-content: space-between; align-items: center; 
-            z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+        #cart-bar {
+            position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%);
+            width: calc(100% - 30px); max-width: 400px;
+            background: #FFD600; color: #1E2235;
+            padding: 18px 22px; border-radius: 20px; display: none;
+            justify-content: space-between; align-items: center;
+            z-index: 1000; box-shadow: 0 10px 30px rgba(255,214,0,0.4);
             cursor: pointer; overflow: hidden;
-            border: 1.5px solid rgba(255,255,255,0.12);
         }
         #cart-bar::after {
             content: '';
-            position: absolute;
-            top: 0; left: -100%;
+            position: absolute; top: 0; left: -100%;
             width: 60%; height: 100%;
-            background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.18) 50%, transparent 100%);
-            animation: shimmer 2.2s infinite;
-            pointer-events: none;
+            background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%);
+            animation: shimmer 2.2s infinite; pointer-events: none;
         }
-        @keyframes shimmer {
-            0%   { left: -100%; }
-            100% { left: 160%; }
+        @keyframes pulse-red {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(1.3); }
         }
+        @keyframes shimmer { 0% { left: -100%; } 100% { left: 160%; } }
 
         /* ── PRODUCT DETAIL PAGE ── */
         #detail-page {
             display: none; flex-direction: column;
             position: fixed; top: 0; left: 50%; transform: translateX(-50%);
             width: 100%; max-width: 430px; height: 100vh;
-            background: var(--color-offwhite); z-index: 1500;
+            background: #1E2235; z-index: 1500;
             overflow: visible;
         }
         #detail-page.open { display: flex; }
 
         .detail-hero {
             position: relative; width: 100%; height: 240px; flex-shrink: 0;
-            background: #1a1a1a;
+            background: #FFF9C4;
         }
         .detail-hero-img-wrap {
             position: absolute; top: 0; left: 0;
@@ -253,11 +302,11 @@
         }
         .detail-back-btn {
             position: absolute; top: 16px; left: 16px;
-            background: rgba(255,255,255,0.85); backdrop-filter: blur(8px);
+            background: rgba(30,34,53,0.7); backdrop-filter: blur(8px);
             border: none; width: 38px; height: 38px; border-radius: 50%;
-            font-size: 1.2rem; font-weight: 900; cursor: pointer; color: var(--color-black);
+            font-size: 1.2rem; font-weight: 900; cursor: pointer; color: white;
             display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.15); z-index: 10;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index: 10;
         }
         .detail-body {
             flex: 1; padding: 8px 20px 80px;
@@ -265,71 +314,67 @@
             display: flex; flex-direction: column; justify-content: flex-start; gap: 6px;
         }
         .detail-name {
-            font-size: 1.7rem; font-weight: 900; color: var(--color-black);
+            font-size: 1.7rem; font-weight: 900; color: white;
             margin-bottom: 0; line-height: 1.1;
         }
         .detail-price {
-            font-size: 1.3rem; font-weight: 900; color: var(--color-burgundy);
+            font-size: 1.3rem; font-weight: 900; color: #FFD600;
             margin-top: 2px; margin-bottom: 4px;
         }
         .detail-desc {
-            font-size: 0.88rem; color: #555; line-height: 1.4;
+            font-size: 0.88rem; color: rgba(255,255,255,0.55); line-height: 1.4;
             margin-bottom: 0; padding-bottom: 0;
-            border-bottom: none;
-            border-bottom: 1px solid #e8e8e8;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
         }
 
         /* ── BOTTLE ALCOHOL WIDGET ── */
         .alcohol-section { display: flex; flex-direction: column; align-items: center; gap: 12px; }
         .alcohol-label {
             font-size: 0.72rem; font-weight: 800; text-transform: uppercase;
-            letter-spacing: 0.08em; color: #999; align-self: flex-start;
+            letter-spacing: 0.08em; color: rgba(255,255,255,0.4); align-self: flex-start;
         }
         .bottle-wrap {
             display: flex; flex-direction: column; align-items: center; gap: 10px;
             cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent;
         }
         .bottle-hint {
-            font-size: 0.72rem; color: #aaa; letter-spacing: 0.04em;
+            font-size: 0.72rem; color: rgba(255,255,255,0.3); letter-spacing: 0.04em;
         }
-        /* SVG bottle itself is inline; liquid level controlled via JS */
         .alcohol-pct-display {
-            font-size: 1.5rem; font-weight: 900; color: var(--color-burgundy);
+            font-size: 1.5rem; font-weight: 900; color: #FFD600;
             letter-spacing: -0.02em; min-height: 36px;
             transition: all 0.3s;
         }
-        .alcohol-steps {
-            display: flex; gap: 8px; margin-top: 4px;
-        }
+        .alcohol-steps { display: flex; gap: 8px; margin-top: 4px; }
         .alc-step {
             width: 10px; height: 10px; border-radius: 50%;
-            background: #ddd; transition: background 0.3s, transform 0.2s;
+            background: rgba(255,255,255,0.15); transition: background 0.3s, transform 0.2s;
         }
-        .alc-step.filled { background: var(--color-burgundy); transform: scale(1.2); }
+        .alc-step.filled { background: #FFD600; transform: scale(1.2); }
 
         /* ── DETAIL FOOTER ── */
         .detail-footer {
             position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
             width: 100%; max-width: 430px;
-            background: white; padding: 16px 20px;
-            box-shadow: 0 -8px 24px rgba(0,0,0,0.08);
+            background: #252A3E; padding: 16px 20px;
+            border-top: 1px solid rgba(255,255,255,0.07);
             display: flex; align-items: center; gap: 12px; z-index: 1600;
         }
         .detail-qty-wrap {
             display: flex; align-items: center;
-            background: #f5f5f5; border-radius: 10px;
-            border: 1px solid #e0e0e0; height: 46px;
+            background: rgba(255,255,255,0.08); border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1); height: 46px;
         }
         .detail-qty-btn {
             background: none; border: none; width: 40px; height: 100%;
-            font-size: 1.2rem; font-weight: 700; cursor: pointer; color: var(--color-black);
+            font-size: 1.2rem; font-weight: 700; cursor: pointer; color: white;
             display: flex; align-items: center; justify-content: center;
         }
         .detail-qty-num {
-            font-weight: 800; font-size: 1rem; min-width: 28px; text-align: center;
+            font-weight: 800; font-size: 1rem; min-width: 28px; text-align: center; color: white;
         }
         .detail-add-btn {
-            flex: 1; background: var(--color-burgundy); color: white;
+            flex: 1; background: #FFD600; color: #1E2235;
             border: none; border-radius: 12px; height: 46px;
             font-weight: 800; font-size: 0.9rem; cursor: pointer;
             display: flex; align-items: center; justify-content: center; gap: 8px;
@@ -343,6 +388,45 @@
             to   { transform: translateX(-50%) translateY(0);    opacity: 1; }
         }
         #detail-page.open { animation: slideUp 0.28s cubic-bezier(0.22,1,0.36,1); }
+
+        /* ── BOTTOM NAV ── */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+            width: 100%; max-width: 430px;
+            background: #1A1F35;
+            border-top: 1px solid rgba(255,255,255,0.07);
+            display: flex; align-items: center; justify-content: space-around;
+            padding: 10px 8px calc(10px + env(safe-area-inset-bottom));
+            z-index: 900;
+        }
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center; gap: 4px;
+            flex: 1; cursor: pointer; border: none; background: none;
+            padding: 4px 0; -webkit-tap-highlight-color: transparent;
+            transition: opacity 0.15s;
+        }
+        .nav-item:active { opacity: 0.6; }
+        .nav-item i {
+            font-size: 1.2rem; color: rgba(255,255,255,0.35);
+            transition: color 0.2s;
+        }
+        .nav-item span {
+            font-size: 0.6rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.04em; color: rgba(255,255,255,0.35);
+            transition: color 0.2s;
+        }
+        .nav-item.active i, .nav-item.active span { color: #FFD600; }
+        .nav-item.cart-nav { position: relative; }
+        .nav-cart-badge {
+            position: absolute; top: 0; right: 18%;
+            background: #FFD600; color: #000 !important;
+            font-size: 0.55rem; font-weight: 900;
+            min-width: 16px; height: 16px;
+            border-radius: 999px; display: none;
+            align-items: center; justify-content: center;
+            padding: 0 4px;
+        }
+
     </style>
 </head>
 <body>
@@ -499,38 +583,51 @@
                 <i class="fas fa-wine-bottle"></i>
                 <span class="logo-text-span">LICOR DA CIDA</span>
             </div>
-            <button class="btn-info" style="width: auto; padding: 0 16px; font-size: 0.55rem; border-radius: 999px;" onclick="document.getElementById('sobre-modal').style.display='flex'">Sobre</button>
+            <button class="btn-info" style="width: auto; padding: 0 16px; font-size: 0.55rem; border-radius: 999px; background:#FFD600; color:#1E2235;" onclick="document.getElementById('sobre-modal').style.display='flex'">Sobre</button>
         </header>
+        <nav class="filter-nav" id="filter-nav">
+            <button class="filter-btn" data-id="0" onclick="scrollToCard(0)" title="Abacaxi">🍍</button>
+            <button class="filter-btn" data-id="1" onclick="scrollToCard(1)" title="Amarula">🍦</button>
+            <button class="filter-btn" data-id="2" onclick="scrollToCard(2)" title="Maracujá">🟡</button>
+            <button class="filter-btn" data-id="3" onclick="scrollToCard(3)" title="Coco">🥥</button>
+            <button class="filter-btn" data-id="4" onclick="scrollToCard(4)" title="Milho Verde">🌽</button>
+            <button class="filter-btn" data-id="5" onclick="scrollToCard(5)" title="Amendoim">🥜</button>
+            <button class="filter-btn" data-id="6" onclick="scrollToCard(6)" title="Tamarindo">🟤</button>
+            <button class="filter-btn" data-id="7" onclick="scrollToCard(7)" title="Jenipapo">🌿</button>
+            <button class="filter-btn" data-id="8" onclick="scrollToCard(8)" title="Cappuccino">☕</button>
+            <button class="filter-btn" data-id="9" onclick="scrollToCard(9)" title="Menta">🍃</button>
+        </nav>
         <div class="liqueur-grid" id="grid"></div>
     </div>
 
     <!-- ══ MODAL SOBRE ══ -->
-    <div id="sobre-modal" style="display:none; position:fixed; top:0; left:50%; transform:translateX(-50%); width:100%; max-width:430px; height:100vh; background:var(--color-offwhite); z-index:3000; overflow:hidden; flex-direction:column;">
+    <div id="sobre-modal" style="display:none; position:fixed; top:0; left:50%; transform:translateX(-50%); width:100%; max-width:430px; height:100vh; background:#1E2235; z-index:3000; overflow:hidden; flex-direction:column;">
         <div style="padding:14px 16px 16px; box-sizing:border-box; height:100vh; display:flex; flex-direction:column; justify-content:space-between;">
             <!-- Header -->
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                <button onclick="document.getElementById('sobre-modal').style.display='none'" style="background:var(--color-black); color:white; border:none; width:32px; height:32px; border-radius:10px; cursor:pointer; display:flex; align-items:center; justify-content:center;"><i class="fas fa-arrow-left"></i></button>
-                <h2 style="font-size:1rem; font-weight:900; color:var(--color-black); margin:0;">SOBRE NÓS</h2>
+                <button onclick="document.getElementById('sobre-modal').style.display='none'" style="background:rgba(255,255,255,0.1); color:white; border:none; width:32px; height:32px; border-radius:10px; cursor:pointer; display:flex; align-items:center; justify-content:center;"><i class="fas fa-arrow-left"></i></button>
+                <h2 style="font-size:1rem; font-weight:900; color:white; margin:0;">SOBRE NÓS</h2>
                 <div style="width:32px;"></div>
             </div>
 
             <!-- Funcionamento -->
-            <div style="background:white; border-radius:14px; padding:12px 14px; margin-bottom:8px; border:1px solid #eee;">
-                <p style="font-weight:800; color:var(--color-burgundy); font-size:0.72rem; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px;">🕐 Funcionamento</p>
-                <p style="margin:0 0 2px; font-size:0.82rem; color:var(--color-black);"><strong>Segunda a Sexta:</strong> 09h às 18h</p>
-                <p style="margin:0; font-size:0.82rem; color:var(--color-black);"><strong>Sábado:</strong> 09h às 13h</p>
+            <div style="background:#252A3E; border-radius:14px; padding:12px 14px; margin-bottom:8px; border:1px solid rgba(255,255,255,0.07);">
+                <p style="font-weight:800; color:white; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px;">🕐 Funcionamento</p>
+                <p style="margin:0 0 2px; font-size:0.82rem; color:white;"><strong>Segunda a Sexta:</strong> 09h às 18h</p>
+                <p style="margin:0; font-size:0.82rem; color:white;"><strong>Sábado:</strong> 09h às 13h</p>
             </div>
 
             <!-- Qualidade -->
-            <div style="background:white; border-radius:14px; padding:12px 14px; margin-bottom:8px; border:1px solid #eee;">
-                <p style="font-weight:800; color:var(--color-burgundy); font-size:0.72rem; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px;">🏆 Qualidade e Compromisso</p>
-                <p style="margin:0; font-size:0.78rem; color:#555; line-height:1.45;">Com anos de experiência, construímos uma reputação sólida baseada na transparência, ética e respeito aos prazos. Temos estrutura e conhecimento técnico para resolver com eficiência.</p>
+            <div style="background:#252A3E; border-radius:14px; padding:12px 14px; margin-bottom:8px; border:1px solid rgba(255,255,255,0.07);">
+                <p style="font-weight:800; color:white; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px;">🏆 Qualidade e Compromisso</p>
+                <p style="margin:0 0 6px; font-size:0.82rem; color:white; font-weight:700; line-height:1.4;">Desde <strong style="color:#FFD600;">2012</strong> fazendo a diferença nos momentos importantes da sua vida 🍾</p>
+                <p style="margin:0; font-size:0.78rem; color:rgba(255,255,255,0.65); line-height:1.5;">Mais de <strong style="color:#FFD600;">14 anos</strong> de reputação sólida baseada na <strong style="color:white;">qualidade do nosso produto</strong>, <strong style="color:white;">transparência</strong>, <strong style="color:white;">ética</strong> e respeito aos prazos. Temos estrutura e conhecimento técnico para fazer o <strong style="color:#FFD600;">melhor licor da Bahia</strong>.</p>
             </div>
 
             <!-- Onde Encontrar -->
-            <div style="background:white; border-radius:14px; padding:12px 14px; margin-bottom:8px; border:1px solid #eee; flex:1; display:flex; flex-direction:column;">
-                <p style="font-weight:800; color:var(--color-burgundy); font-size:0.72rem; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">📍 Onde Encontrar</p>
-                <p style="margin:0 0 8px; font-size:0.78rem; color:#555; line-height:1.4;">R. Manoel Cláudio do Nascimento, 66 - Alto da Maravilha, Juazeiro - BA</p>
+            <div style="background:#252A3E; border-radius:14px; padding:12px 14px; margin-bottom:8px; border:1px solid rgba(255,255,255,0.07); flex:1; display:flex; flex-direction:column;">
+                <p style="font-weight:800; color:white; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">📍 Onde Encontrar</p>
+                <p style="margin:0 0 8px; font-size:0.78rem; color:rgba(255,255,255,0.55); line-height:1.4;">R. Manoel Cláudio do Nascimento, 66 - Alto da Maravilha, Juazeiro - BA</p>
                 <!-- Mapa -->
                 <div style="border-radius:10px; overflow:hidden; flex:1; min-height:100px; margin-bottom:8px;">
                     <iframe
@@ -544,7 +641,7 @@
                     <a href="https://wa.me/5574988037555" target="_blank" style="flex:1; display:flex; align-items:center; justify-content:center; gap:6px; background:#25D366; color:white; border-radius:10px; padding:10px; font-weight:800; font-size:0.8rem; text-decoration:none;">
                         <i class="fab fa-whatsapp"></i> WhatsApp
                     </a>
-                    <a href="https://instagram.com/" target="_blank" style="flex:1; display:flex; align-items:center; justify-content:center; gap:6px; background:linear-gradient(135deg,#f58529,#dd2a7b,#8134af); color:white; border-radius:10px; padding:10px; font-weight:800; font-size:0.8rem; text-decoration:none;">
+                    <a href="https://www.instagram.com/licordacida_juazeiro?igsh=MW96bW15dmV3Z2JweA==" target="_blank" style="flex:1; display:flex; align-items:center; justify-content:center; gap:6px; background:linear-gradient(135deg,#f58529,#dd2a7b,#8134af); color:white; border-radius:10px; padding:10px; font-weight:800; font-size:0.8rem; text-decoration:none;">
                         <i class="fab fa-instagram"></i> Instagram
                     </a>
                 </div>
@@ -557,9 +654,9 @@
     </div>
 
     <div id="checkout-page">
-        <div style="padding: 15px 20px; background: white; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 15px; shrink: 0;">
-            <button onclick="togglePages()" style="background:var(--color-black); color:white; border:none; width:35px; height:35px; border-radius:10px;"><i class="fas fa-arrow-left"></i></button>
-            <h2 style="font-size:1.1rem; font-weight:900; color: var(--color-black);">CONFERIR PEDIDO</h2>
+        <div style="padding: 15px 20px; background: #252A3E; border-bottom: 1px solid rgba(255,255,255,0.07); display: flex; align-items: center; gap: 15px; shrink: 0;">
+            <button onclick="togglePages()" style="background:rgba(255,255,255,0.1); color:white; border:none; width:35px; height:35px; border-radius:10px;"><i class="fas fa-arrow-left"></i></button>
+            <h2 style="font-size:1.1rem; font-weight:900; color: white;">CONFERIR PEDIDO</h2>
         </div>
         
         <div class="checkout-scroll-area">
@@ -606,13 +703,237 @@
         </div>
     </div>
 
-    <div id="cart-bar" onclick="togglePages()" style="cursor:pointer;">
+    <div id="cart-bar" onclick="tryOpenCart()" style="cursor:pointer;">
         <div style="display:flex; align-items:center; gap:12px;">
-            <span style="background:var(--color-burgundy); color:white; padding:4px 12px; border-radius:50px; font-weight:800;" id="cart-count">0</span>
-            <span style="font-weight:700;">Ver Sacola</span>
+            <span style="background:rgba(255,255,255,0.25); color:white; padding:4px 12px; border-radius:50px; font-weight:800; color:#1E2235;" id="cart-count">0</span>
+            <span style="font-weight:700; color:#1E2235;">Ver Sacola</span>
         </div>
-        <span id="cart-total" style="font-weight:900;">R$ 0,00</span>
+        <span id="cart-total" style="font-weight:900; color:#1E2235;">R$ 0,00</span>
     </div>
+
+    <!-- ══ PÁGINA: PROMOÇÕES ══ -->
+    <div id="promo-page" style="display:none; flex-direction:column; position:fixed; top:0; left:50%; transform:translateX(-50%); width:100%; max-width:430px; height:100vh; background:#1E2235; z-index:800; overflow-y:auto;">
+        <div style="padding:15px 20px; background:#252A3E; border-bottom:1px solid rgba(255,255,255,0.07); display:flex; align-items:center; gap:15px; position:sticky; top:0; z-index:10;">
+            <button onclick="setNavActive('nav-inicio')" style="background:rgba(255,255,255,0.1); color:white; border:none; width:35px; height:35px; border-radius:10px; cursor:pointer; flex-shrink:0;"><i class="fas fa-arrow-left"></i></button>
+            <h2 style="font-size:1.1rem; font-weight:900; color:white; margin:0;">🏷️ PROMOÇÕES</h2>
+        </div>
+        <div style="padding:16px 16px 100px;">
+
+            <!-- Card Promo: Escolha 2 por R$65 -->
+            <div style="background:linear-gradient(135deg,#49111C,#8B1A2A); border-radius:20px; padding:20px; margin-bottom:14px; position:relative; overflow:hidden;">
+                <div style="position:absolute; top:-20px; right:-20px; width:100px; height:100px; background:rgba(255,214,0,0.08); border-radius:50%;"></div>
+                <div style="position:absolute; bottom:-30px; left:-10px; width:80px; height:80px; background:rgba(255,255,255,0.04); border-radius:50%;"></div>
+                <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:10px;">
+                    <div style="flex:1;">
+                        <span style="background:#FFD600; color:#1E2235; font-size:0.6rem; font-weight:900; padding:3px 10px; border-radius:999px; text-transform:uppercase; letter-spacing:0.5px;">🔥 Combo Especial</span>
+                        <h3 style="color:white; font-size:1.2rem; font-weight:900; margin:10px 0 4px; line-height:1.1;">Escolha 2 Licores</h3>
+                        <p style="color:rgba(255,255,255,0.65); font-size:0.78rem; margin:0 0 14px; line-height:1.4;">Qualquer combinação de 2 licores 500ml à sua escolha. Monte o seu par favorito!</p>
+                        <div style="display:flex; align-items:baseline; gap:8px; margin-bottom:16px;">
+                            <span style="color:rgba(255,255,255,0.35); font-size:0.85rem; text-decoration:line-through;">R$ 70,00</span>
+                            <span style="color:#FFD600; font-size:1.7rem; font-weight:900; line-height:1;">R$ 65</span>
+                            <span style="color:#FFD600; font-size:0.85rem; font-weight:700;">,00</span>
+                        </div>
+                        <a href="https://wa.me/5574988037555?text=Ol%C3%A1!%20Quero%20aproveitar%20a%20promo%C3%A7%C3%A3o%20de%202%20licores%20por%20R%2465!" target="_blank" style="display:inline-flex; align-items:center; gap:8px; background:#25D366; color:white; border-radius:12px; padding:12px 20px; font-weight:800; font-size:0.82rem; text-decoration:none;">
+                            <i class="fab fa-whatsapp"></i> Quero esse combo!
+                        </a>
+                    </div>
+                    <div style="font-size:3rem; flex-shrink:0;">🍾🍾</div>
+                </div>
+            </div>
+
+            <!-- Card Promo: Maracujá R$32 -->
+            <div style="background:#252A3E; border-radius:20px; padding:20px; border:1px solid rgba(255,214,0,0.2); position:relative; overflow:hidden;">
+                <div style="position:absolute; top:-15px; right:-15px; width:80px; height:80px; background:rgba(255,214,0,0.05); border-radius:50%;"></div>
+                <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:10px;">
+                    <div style="flex:1;">
+                        <span style="background:rgba(255,214,0,0.15); color:#FFD600; font-size:0.6rem; font-weight:900; padding:3px 10px; border-radius:999px; text-transform:uppercase; letter-spacing:0.5px; border:1px solid rgba(255,214,0,0.3);">⚡ Oferta da Semana</span>
+                        <h3 style="color:white; font-size:1.2rem; font-weight:900; margin:10px 0 4px; line-height:1.1;">Licor de Maracujá</h3>
+                        <p style="color:rgba(255,255,255,0.5); font-size:0.78rem; margin:0 0 8px; line-height:1.4;">Azedo, intenso e irresistível. O favorito da Cida com preço especial essa semana.</p>
+                        <div style="display:inline-flex; align-items:center; gap:6px; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.35); border-radius:999px; padding:4px 12px; margin-bottom:12px;">
+                            <span style="width:6px; height:6px; background:#ef4444; border-radius:50%; animation: pulse-red 1.2s infinite;"></span>
+                            <span style="color:#ef4444; font-size:0.65rem; font-weight:900; text-transform:uppercase; letter-spacing:0.5px;">Restam apenas 5 unidades!</span>
+                        </div>
+                        <div style="display:flex; align-items:baseline; gap:8px; margin-bottom:16px;">
+                            <span style="color:rgba(255,255,255,0.35); font-size:0.85rem; text-decoration:line-through;">R$ 35,00</span>
+                            <span style="color:#FFD600; font-size:1.7rem; font-weight:900; line-height:1;">R$ 32</span>
+                            <span style="color:#FFD600; font-size:0.85rem; font-weight:700;">,00</span>
+                        </div>
+                        <a href="https://wa.me/5574988037555?text=Ol%C3%A1!%20Quero%20o%20Licor%20de%20Maracuj%C3%A1%20na%20promo%C3%A7%C3%A3o%20de%20R%2432!" target="_blank" style="display:inline-flex; align-items:center; gap:8px; background:#25D366; color:white; border-radius:12px; padding:12px 20px; font-weight:800; font-size:0.82rem; text-decoration:none;">
+                            <i class="fab fa-whatsapp"></i> Pedir agora
+                        </a>
+                    </div>
+                    <div style="font-size:3rem; flex-shrink:0;">🟡</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ══ PÁGINA: REVENDA ══ -->
+    <div id="revenda-page" style="display:none; flex-direction:column; position:fixed; top:0; left:50%; transform:translateX(-50%); width:100%; max-width:430px; height:100vh; background:#1E2235; z-index:800; overflow-y:auto;">
+        <div style="padding:15px 20px; background:#252A3E; border-bottom:1px solid rgba(255,255,255,0.07); display:flex; align-items:center; gap:15px; position:sticky; top:0; z-index:10;">
+            <button onclick="setNavActive('nav-inicio')" style="background:rgba(255,255,255,0.1); color:white; border:none; width:35px; height:35px; border-radius:10px; cursor:pointer; flex-shrink:0;"><i class="fas fa-arrow-left"></i></button>
+            <h2 style="font-size:1.1rem; font-weight:900; color:white; margin:0;">🏪 REVENDA</h2>
+        </div>
+        <div style="padding:16px 16px 100px;">
+
+            <!-- Hero -->
+            <div style="background:linear-gradient(135deg,#252A3E,#2E3450); border-radius:20px; padding:22px 20px; margin-bottom:14px; text-align:center;">
+                <div style="font-size:2.5rem; margin-bottom:8px;">✨</div>
+                <h3 style="color:white; font-size:1.25rem; font-weight:900; margin:0 0 8px; line-height:1.2;">Seja uma Revendedora!</h3>
+                <p style="color:rgba(255,255,255,0.55); font-size:0.82rem; line-height:1.5; margin:0;">Ganhe dinheiro vendendo produtos artesanais de qualidade. Escolha o modelo que combina com você.</p>
+            </div>
+
+            <!-- Plano 1: Compra com desconto -->
+            <div style="background:#252A3E; border-radius:20px; padding:20px; margin-bottom:12px; border:2px solid rgba(255,214,0,0.3); position:relative;">
+                <div style="position:absolute; top:-12px; left:20px; background:#FFD600; color:#1E2235; font-size:0.62rem; font-weight:900; padding:4px 12px; border-radius:999px; text-transform:uppercase; letter-spacing:0.5px;">Plano 1</div>
+                <h4 style="color:#FFD600; font-size:1rem; font-weight:900; margin:8px 0 6px;">🛒 Compre e Revenda</h4>
+                <p style="color:rgba(255,255,255,0.65); font-size:0.8rem; line-height:1.5; margin:0 0 14px;">Adquira os produtos com <strong style="color:white;">preço de revendedora</strong> a partir de <strong style="color:#FFD600;">8 unidades</strong> e venda pelo preço que quiser. Quanto mais você vende, mais você ganha.</p>
+                <div style="background:rgba(255,214,0,0.07); border-radius:12px; padding:14px; margin-bottom:16px; border:1px solid rgba(255,214,0,0.15);">
+                    <p style="color:rgba(255,255,255,0.45); font-size:0.7rem; font-weight:700; text-transform:uppercase; margin:0 0 8px; letter-spacing:0.5px;">Benefícios</p>
+                    <div style="display:flex; flex-direction:column; gap:6px;">
+                        <div style="display:flex; align-items:center; gap:8px;"><span style="color:#FFD600;">✓</span><span style="color:rgba(255,255,255,0.8); font-size:0.8rem;">Preço especial de revendedora</span></div>
+                        <div style="display:flex; align-items:center; gap:8px;"><span style="color:#FFD600;">✓</span><span style="color:rgba(255,255,255,0.8); font-size:0.8rem;">Mínimo de 8 unidades por pedido</span></div>
+                        <div style="display:flex; align-items:center; gap:8px;"><span style="color:#FFD600;">✓</span><span style="color:rgba(255,255,255,0.8); font-size:0.8rem;">Você define seu próprio preço de venda</span></div>
+                        <div style="display:flex; align-items:center; gap:8px;"><span style="color:#FFD600;">✓</span><span style="color:rgba(255,255,255,0.8); font-size:0.8rem;">Suporte com dicas de divulgação</span></div>
+                    </div>
+                </div>
+                <a href="https://wa.me/5574988037555?text=Ol%C3%A1!%20Tenho%20interesse%20no%20Plano%201%20de%20Revenda%20(Compra%20com%20desconto)!" target="_blank" style="display:flex; align-items:center; justify-content:center; gap:8px; background:#FFD600; color:#1E2235; border-radius:12px; padding:13px; font-weight:900; font-size:0.85rem; text-decoration:none;">
+                    <i class="fab fa-whatsapp"></i> Quero esse plano
+                </a>
+            </div>
+
+            <!-- Plano 2: Parceria de lucro -->
+            <div style="background:#252A3E; border-radius:20px; padding:20px; margin-bottom:12px; border:2px solid rgba(255,214,0,0.3); position:relative;">
+                <div style="position:absolute; top:-12px; left:20px; background:#FFD600; color:#1E2235; font-size:0.62rem; font-weight:900; padding:4px 12px; border-radius:999px; text-transform:uppercase; letter-spacing:0.5px;">Plano 2</div>
+                <h4 style="color:#FFD600; font-size:1rem; font-weight:900; margin:8px 0 6px;">🤝 Parceria de Lucro</h4>
+                <p style="color:rgba(255,255,255,0.65); font-size:0.8rem; line-height:1.5; margin:0 0 14px;">Você vende, a Cida cuida do estoque e da produção — e <strong style="color:white;">dividimos o lucro</strong>. Sem investimento inicial, ideal pra quem quer começar sem risco.</p>
+                <div style="background:rgba(255,214,0,0.07); border-radius:12px; padding:14px; margin-bottom:16px; border:1px solid rgba(255,214,0,0.15);">
+                    <p style="color:rgba(255,255,255,0.45); font-size:0.7rem; font-weight:700; text-transform:uppercase; margin:0 0 8px; letter-spacing:0.5px;">Como funciona</p>
+                    <div style="display:flex; flex-direction:column; gap:6px;">
+                        <div style="display:flex; align-items:center; gap:8px;"><span style="color:#FFD600;">✓</span><span style="color:rgba(255,255,255,0.8); font-size:0.8rem;">Sem investimento inicial</span></div>
+                        <div style="display:flex; align-items:center; gap:8px;"><span style="color:#FFD600;">✓</span><span style="color:rgba(255,255,255,0.8); font-size:0.8rem;">Você indica e vende, nós entregamos</span></div>
+                        <div style="display:flex; align-items:center; gap:8px;"><span style="color:#FFD600;">✓</span><span style="color:rgba(255,255,255,0.8); font-size:0.8rem;">Dividimos o lucro combinado</span></div>
+                        <div style="display:flex; align-items:center; gap:8px;"><span style="color:#FFD600;">✓</span><span style="color:rgba(255,255,255,0.8); font-size:0.8rem;">Condições negociadas diretamente</span></div>
+                    </div>
+                </div>
+                <a href="https://wa.me/5574988037555?text=Ol%C3%A1!%20Tenho%20interesse%20no%20Plano%202%20de%20Revenda%20(Parceria%20de%20lucro)!" target="_blank" style="display:flex; align-items:center; justify-content:center; gap:8px; background:#FFD600; color:#1E2235; border-radius:12px; padding:13px; font-weight:900; font-size:0.85rem; text-decoration:none;">
+                    <i class="fab fa-whatsapp"></i> Quero ser parceira
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ══ PÁGINA: CLUBE ══ -->
+    <div id="clube-page" style="display:none; flex-direction:column; position:fixed; top:0; left:50%; transform:translateX(-50%); width:100%; max-width:430px; height:100vh; background:#1E2235; z-index:800; overflow-y:auto;">
+        <div style="padding:15px 20px; background:#252A3E; border-bottom:1px solid rgba(255,255,255,0.07); display:flex; align-items:center; gap:15px; position:sticky; top:0; z-index:10;">
+            <button onclick="setNavActive('nav-inicio')" style="background:rgba(255,255,255,0.1); color:white; border:none; width:35px; height:35px; border-radius:10px; cursor:pointer; flex-shrink:0;"><i class="fas fa-arrow-left"></i></button>
+            <h2 style="font-size:1.1rem; font-weight:900; color:white; margin:0;">⭐ CLUBE DA CIDA</h2>
+        </div>
+        <div style="padding:16px 16px 100px;">
+
+            <!-- Hero pós-venda -->
+            <div style="background:linear-gradient(135deg,#49111C 0%,#8B1A2A 100%); border-radius:20px; padding:22px 20px; margin-bottom:14px; text-align:center; position:relative; overflow:hidden;">
+                <div style="position:absolute; top:-30px; right:-30px; width:120px; height:120px; background:rgba(255,214,0,0.08); border-radius:50%;"></div>
+                <div style="font-size:2.2rem; margin-bottom:6px;">🎁</div>
+                <h3 style="color:white; font-size:1.15rem; font-weight:900; margin:0 0 6px; line-height:1.2;">Você comprou, a relação continua!</h3>
+                <p style="color:rgba(255,255,255,0.6); font-size:0.78rem; line-height:1.5; margin:0;">Nossos clientes não somem depois do pedido. Eles fazem parte de um clube que os trata bem — e os faz sempre querer voltar.</p>
+            </div>
+
+            <!-- Estratégia 1: Programa de pontos -->
+            <div style="background:#252A3E; border-radius:16px; padding:16px; margin-bottom:10px; display:flex; align-items:flex-start; gap:14px; border:1px solid rgba(255,255,255,0.07);">
+                <div style="font-size:1.6rem; flex-shrink:0; width:44px; height:44px; background:rgba(255,214,0,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center;">🏅</div>
+                <div>
+                    <h4 style="color:#FFD600; font-size:0.9rem; font-weight:900; margin:0 0 4px;">Programa de Pontos</h4>
+                    <p style="color:rgba(255,255,255,0.55); font-size:0.78rem; line-height:1.4; margin:0;">A cada compra você acumula pontos. Ao juntar 5 compras, <strong style="color:white;">ganhe 1 licor grátis</strong> da sua escolha. Simples, justo e recompensador.</p>
+                </div>
+            </div>
+
+            <!-- Estratégia 2: Lembrete de reposição -->
+            <div style="background:#252A3E; border-radius:16px; padding:16px; margin-bottom:10px; display:flex; align-items:flex-start; gap:14px; border:1px solid rgba(255,255,255,0.07);">
+                <div style="font-size:1.6rem; flex-shrink:0; width:44px; height:44px; background:rgba(240,128,128,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center;">📲</div>
+                <div>
+                    <h4 style="color:#FFD600; font-size:0.9rem; font-weight:900; margin:0 0 4px;">Lembrete Carinhoso</h4>
+                    <p style="color:rgba(255,255,255,0.55); font-size:0.78rem; line-height:1.4; margin:0;">Após cada compra, a Cida manda um recadinho no WhatsApp. Não pra incomodar — pra saber se gostou, avisar quando tem novidade e lembrar que ela está aqui. ❤️</p>
+                </div>
+            </div>
+
+            <!-- Estratégia 3: Aniversário -->
+            <div style="background:#252A3E; border-radius:16px; padding:16px; margin-bottom:10px; display:flex; align-items:flex-start; gap:14px; border:1px solid rgba(255,255,255,0.07);">
+                <div style="font-size:1.6rem; flex-shrink:0; width:44px; height:44px; background:rgba(255,214,0,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center;">🎂</div>
+                <div>
+                    <h4 style="color:#FFD600; font-size:0.9rem; font-weight:900; margin:0 0 4px;">Desconto no Aniversário</h4>
+                    <p style="color:rgba(255,255,255,0.55); font-size:0.78rem; line-height:1.4; margin:0;">No mês do seu aniversário, você recebe um cupom especial de desconto. Porque quem faz parte do clube merece comemorar com estilo — e com licor! 🥂</p>
+                </div>
+            </div>
+
+            <!-- Estratégia 4: Avaliação -->
+            <div style="background:#252A3E; border-radius:16px; padding:16px; margin-bottom:10px; display:flex; align-items:flex-start; gap:14px; border:1px solid rgba(255,255,255,0.07);">
+                <div style="font-size:1.6rem; flex-shrink:0; width:44px; height:44px; background:rgba(240,128,128,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center;">⭐</div>
+                <div>
+                    <h4 style="color:#FFD600; font-size:0.9rem; font-weight:900; margin:0 0 4px;">Avalie e Ganhe</h4>
+                    <p style="color:rgba(255,255,255,0.55); font-size:0.78rem; line-height:1.4; margin:0;">Mandou foto ou vídeo usando o produto? Compartilhou nos stories e marcou a gente? <strong style="color:white;">Ganhe desconto na próxima compra.</strong> Seu apoio vale muito!</p>
+                </div>
+            </div>
+
+            <!-- Estratégia 5: Indicação -->
+            <div style="background:#252A3E; border-radius:16px; padding:16px; margin-bottom:14px; display:flex; align-items:flex-start; gap:14px; border:1px solid rgba(255,255,255,0.07);">
+                <div style="font-size:1.6rem; flex-shrink:0; width:44px; height:44px; background:rgba(255,214,0,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center;">🤝</div>
+                <div>
+                    <h4 style="color:#FFD600; font-size:0.9rem; font-weight:900; margin:0 0 4px;">Indique e Ganhe</h4>
+                    <p style="color:rgba(255,255,255,0.55); font-size:0.78rem; line-height:1.4; margin:0;">Indicou uma amiga que comprou? Você ganha um brinde na sua próxima compra. Quanto mais você indica, mais presentes a Cida prepara pra você. 🎀</p>
+                </div>
+            </div>
+
+            <!-- Estratégia 6: Sorteio semanal -->
+            <div style="background:linear-gradient(135deg,#2E1A47,#3D2060); border-radius:16px; padding:16px; margin-bottom:14px; display:flex; align-items:flex-start; gap:14px; border:1px solid rgba(167,139,250,0.25);">
+                <div style="font-size:1.6rem; flex-shrink:0; width:44px; height:44px; background:rgba(167,139,250,0.15); border-radius:12px; display:flex; align-items:center; justify-content:center;">🎰</div>
+                <div>
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                        <h4 style="color:#c4b5fd; font-size:0.9rem; font-weight:900; margin:0;">Sorteio Semanal Exclusivo</h4>
+                        <span style="background:rgba(167,139,250,0.2); color:#c4b5fd; font-size:0.55rem; font-weight:900; padding:2px 8px; border-radius:999px; border:1px solid rgba(167,139,250,0.3); text-transform:uppercase;">Novo</span>
+                    </div>
+                    <p style="color:rgba(255,255,255,0.6); font-size:0.78rem; line-height:1.4; margin:0;"><strong style="color:white;">2 sorteios por semana</strong> exclusivos para membros do clube. Ganhe licores, brindes e surpresas da Cida diretamente no seu WhatsApp. Quanto mais tempo no clube, mais chances! 🍀</p>
+                </div>
+            </div>
+
+            <!-- CTA entrar no clube -->
+            <div style="background:linear-gradient(135deg,#252A3E,#2E3450); border-radius:20px; padding:20px; text-align:center; border:1px solid rgba(255,214,0,0.2);">
+                <p style="color:white; font-size:0.95rem; font-weight:800; margin:0 0 6px;">Pronta pra fazer parte?</p>
+                <p style="color:rgba(255,255,255,0.45); font-size:0.75rem; margin:0 0 16px;">Manda uma mensagem e já entra no grupo exclusivo de clientes fiéis da Cida ✨</p>
+                <a href="https://wa.me/5574988037555?text=Ol%C3%A1%20Cida!%20Quero%20fazer%20parte%20do%20Clube%20da%20Cida%20e%20aproveitar%20as%20vantagens!%20%F0%9F%8D%BE" target="_blank" style="display:inline-flex; align-items:center; gap:8px; background:#25D366; color:white; border-radius:12px; padding:14px 24px; font-weight:900; font-size:0.88rem; text-decoration:none;">
+                    <i class="fab fa-whatsapp"></i> Entrar no Clube
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ── BOTTOM NAV ── -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" id="nav-inicio" onclick="setNavActive('nav-inicio')">
+            <i class="fas fa-home"></i>
+            <span>Início</span>
+        </button>
+        <button class="nav-item" id="nav-promo" onclick="setNavActive('nav-promo')">
+            <i class="fas fa-tag"></i>
+            <span>Promoções</span>
+        </button>
+        <button class="nav-item" id="nav-revenda" onclick="setNavActive('nav-revenda')">
+            <i class="fas fa-store"></i>
+            <span>Revenda</span>
+        </button>
+        <button class="nav-item" id="nav-clube" onclick="setNavActive('nav-clube')">
+            <i class="fas fa-star"></i>
+            <span>Clube</span>
+        </button>
+        <button class="nav-item cart-nav" id="nav-carrinho" onclick="tryOpenCart()">
+            <i class="fas fa-shopping-bag"></i>
+            <span id="nav-cart-count-label">Carrinho</span>
+            <span class="nav-cart-badge" id="nav-cart-badge">0</span>
+        </button>
+    </nav>
 
     <!-- ══ PRODUCT DETAIL PAGE ══ -->
     <div id="detail-page">
@@ -656,9 +977,9 @@
                               fill="rgba(255,255,255,0.25)" clip-path="url(#bottle-clip)"
                               style="transition: y 0.6s cubic-bezier(0.34,1.56,0.64,1), height 0.6s cubic-bezier(0.34,1.56,0.64,1)"/>
                         <path d="M28 14 L28 38 Q14 50 12 72 L12 136 Q12 148 24 150 L48 150 Q60 148 60 136 L60 72 Q58 50 44 38 L44 14 Z"
-                              fill="rgba(255,255,255,0.1)" stroke="#49111C" stroke-width="2.5"/>
+                              fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.7)" stroke-width="2.5"/>
                         <rect x="27" y="6" width="18" height="10" rx="3"
-                              fill="rgba(255,255,255,0.1)" stroke="#49111C" stroke-width="2"/>
+                              fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
                         <rect x="29" y="2" width="14" height="7" rx="3" fill="#49111C"/>
                         <rect x="16" y="90" width="40" height="36" rx="5"
                               fill="rgba(255,255,255,0.55)" stroke="rgba(73,17,28,0.2)" stroke-width="1"/>
@@ -669,7 +990,7 @@
                         <line x1="20" y1="120" x2="52" y2="120" stroke="#49111C" stroke-width="0.5" opacity="0.3"/>
                         <path d="M17 75 Q15 100 16 130" stroke="rgba(255,255,255,0.35)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
                     </svg>
-                    <div id="alc-pct" style="font-size:1rem; font-weight:900; color:var(--color-burgundy); line-height:1; text-align:center;">10% vol.</div>
+                    <div id="alc-pct" style="font-size:1rem; font-weight:900; color:white; line-height:1; text-align:center;">10% vol.</div>
                 </div>
             </div>
         </div>
@@ -691,24 +1012,34 @@
 <script>
     const produtos = [
         { id: 0, nome: "Abacaxi", img: "https://res.cloudinary.com/dwrq06fta/image/upload/v1777334953/Amplie_para_propor%C3%A7%C3%A3o_202604272102_c1jyoj.jpg",
+          shortDesc: "Tropical, refrescante e adocicado — abacaxi maduro com cachaça artesanal.",
           desc: "Um licor tropical refrescante, feito com abacaxi maduro selecionado, cachaça artesanal e açúcar demerara. O resultado é uma bebida dourada, equilibrada entre o doce e o ácido, com aroma irresistível de fruta fresca." },
         { id: 1, nome: "Amarula", img: "https://res.cloudinary.com/dwrq06fta/image/upload/v1777334952/Tire_r%C3%B3tulo_da_202604272102_uwpy8o.jpg",
+          shortDesc: "Cremoso e aveludado, inspirado no clássico africano. Perfeito puro ou em sobremesas.",
           desc: "Inspirado no clássico africano, este licor cremoso é preparado com leite condensado, creme de leite, cachaça suave e essência de baunilha. Aveludado, rico e perfeito para sobremesa ou puro." },
         { id: 2, nome: "Maracujá", img: "https://res.cloudinary.com/dwrq06fta/image/upload/v1777334965/Amplie_para_propor%C3%A7%C3%A3o_202604272103_5_qxmzug.jpg",
+          shortDesc: "Azedo-adocicado com aroma intenso de fruta fresca. Difícil parar no primeiro gole.",
           desc: "Feito com polpa de maracujá fresco, cachaça envelhecida e açúcar cristal. Tem sabor intensamente azedo-adocicado, cor amarelo vibrante e aroma que lembra um suco natural recém-feito." },
         { id: 3, nome: "Coco", img: "https://res.cloudinary.com/dwrq06fta/image/upload/v1777334958/Amplie_para_propor%C3%A7%C3%A3o_202604272103_4_dyiiol.jpg",
+          shortDesc: "Levemente cremoso, tropical e adocicado. Uma viagem às praias brasileiras.",
           desc: "Preparado com coco ralado fresco, leite de coco artesanal e cachaça leve. Tem textura levemente cremosa, sabor tropical e adocicado, remetendo às praias brasileiras." },
         { id: 4, nome: "Milho Verde", img: "https://res.cloudinary.com/dwrq06fta/image/upload/v1777334965/Amplie_para_propor%C3%A7%C3%A3o_202604272103_1_h459t2.jpg",
+          shortDesc: "Inusitado e surpreendente — sabor de festa junina em garrafa.",
           desc: "Uma receita inusitada e surpreendente: milho verde cozido, processado e infusionado com cachaça e açúcar. Sabor adocicado com notas terrosas, cor amarelo-palha e perfume de festa junina." },
         { id: 5, nome: "Amendoim", img: "https://res.cloudinary.com/dwrq06fta/image/upload/v1777334959/Amplie_para_propor%C3%A7%C3%A3o_202604272103_3_ogbpae.jpg",
+          shortDesc: "Encorpado com sabor de amendoim torrado e leve defumado natural.",
           desc: "Amendoim torrado e moído, misturado com cachaça e açúcar mascavo. Tem sabor encorpado de amendoim com leve defumado natural, textura levemente densa e aroma que conquista." },
         { id: 6, nome: "Tamarindo", img: "https://res.cloudinary.com/dwrq06fta/image/upload/v1777334963/Amplie_para_propor%C3%A7%C3%A3o_202604272103_mbhczr.jpg",
+          shortDesc: "Azedo, doce e exótico ao mesmo tempo. Uma explosão de sabores única.",
           desc: "Feito com polpa de tamarindo, açúcar e cachaça artesanal. Sabor azedo e doce ao mesmo tempo, cor marrom-avermelhada e aroma exótico. Uma explosão de sabores em cada gole." },
         { id: 7, nome: "Jenipapo", img: "https://res.cloudinary.com/dwrq06fta/image/upload/v1777334958/Amplie_para_propor%C3%A7%C3%A3o_202604272102_1_ljejl3.jpg",
+          shortDesc: "Fruto típico do Nordeste — sabor único, escuro e cheio de tradição.",
           desc: "Fruto típico do Nordeste brasileiro, o jenipapo dá origem a um licor escuro, de sabor único: levemente adstringente, adocicado e com notas terrosas. Tradição nordestina em garrafa." },
         { id: 8, nome: "Cappuccino", img: "https://res.cloudinary.com/dwrq06fta/image/upload/v1777334964/Amplie_para_propor%C3%A7%C3%A3o_202604272103_2_cnlqe7.jpg",
+          shortDesc: "Café, canela e creme num licor aromático. Ideal após o jantar.",
           desc: "Café expresso, canela, creme de leite e cachaça se encontram para criar um licor cremoso e aromático. Perfeito após o jantar, com sorvete ou simplesmente puro, bem gelado." },
         { id: 9, nome: "Menta", img: "https://res.cloudinary.com/dwrq06fta/image/upload/v1777334965/Amplie_para_a_202604272103_r5fips.jpg",
+          shortDesc: "Verde, refrescante e aromático — hortelã macerada com cachaça artesanal.",
           desc: "Folhas de hortelã frescas, maceradas em cachaça por dias, com açúcar e essência natural de menta. Cor verde intensa, aroma refrescante e sabor que refresca o paladar." }
     ];
 
@@ -903,15 +1234,20 @@
             // Todos os cards são featured
             card.className = 'liqueur-card featured';
             card.dataset.id = p.id;
+            card.id = 'card-' + p.id;
             card.innerHTML = `
-                <img class="feat-img" src="${p.img}" alt="${p.nome}">
-                <div class="feat-gradient"></div>
+                <div class="feat-img-wrap">
+                    <img src="${p.img}" alt="${p.nome}">
+                </div>
                 <div class="feat-content">
-                    <p class="feat-name" data-id="${p.id}">${p.nome}</p>
-                    <p class="feat-price">R$ ${PRECO},00</p>
-                    <div class="card-actions">
+                    <div class="feat-top">
+                        <p class="feat-name" data-id="${p.id}">${p.nome}</p>
+                        <p class="feat-desc">${p.shortDesc}</p>
+                    </div>
+                    <p class="feat-price"><span>R$</span>${PRECO},00</p>
+                    <div class="feat-bottom">
                         <div class="qty-wrapper">
-                            <button class="btn-qty-action" data-delta="-1" data-id="${p.id}">-</button>
+                            <button class="btn-qty-action" data-delta="-1" data-id="${p.id}">−</button>
                             <span class="qty-num">${qty}</span>
                             <button class="btn-qty-action" data-delta="1" data-id="${p.id}">+</button>
                         </div>
@@ -931,7 +1267,7 @@
                 const delta = +qtyBtn.dataset.delta;
                 if (delta > 0) {
                     const p = produtos.find(x => x.id === id);
-                    const imgEl = qtyBtn.closest('.liqueur-card').querySelector('img');
+                    const imgEl = qtyBtn.closest('.liqueur-card').querySelector('.feat-img-wrap img, img');
                     if (p && imgEl) flyToCart(p.img, imgEl);
                 }
                 updateQty(id, delta);
@@ -980,6 +1316,11 @@
         const total = subtotal + frete;
         const fmt = v => `R$ ${v.toFixed(2).replace('.', ',')}`;
         document.getElementById('cart-count').innerText = totalQty;
+        var badge = document.getElementById('nav-cart-badge');
+        if (badge) {
+            badge.innerText = totalQty;
+            badge.style.display = totalQty > 0 ? 'flex' : 'none';
+        }
         document.getElementById('cart-total').innerText = fmt(subtotal);
         document.getElementById('s-total').innerText = fmt(total);
         document.getElementById('cart-bar').style.display = totalQty > 0 ? 'flex' : 'none';
@@ -994,12 +1335,12 @@
             const fillH = Math.round((parseInt(pct) / 100) * BOTTLE_H);
             const rectY = BOTTLE_BOT - fillH;
             list.innerHTML += `
-                <div style="background:white; border-radius:15px; padding:10px 12px; margin-bottom:10px; display:flex; align-items:center; justify-content:space-between; border: 1px solid #eee;">
+                <div style="background:#252A3E; border-radius:15px; padding:10px 12px; margin-bottom:10px; display:flex; align-items:center; justify-content:space-between; border: 1px solid rgba(255,255,255,0.07);">
                     <div style="display:flex; align-items:center; gap:10px; flex:1;">
                         <img src="${p.img}" style="width:45px; height:45px; border-radius:8px; object-fit:cover; flex-shrink:0;">
                         <div>
-                            <p style="font-weight:700; color:var(--color-black); margin:0; font-size:0.95rem; line-height:1.2;">${p.nome}</p>
-                            <p style="color:var(--color-burgundy); font-weight:800; font-size:0.85rem; margin:0; line-height:1.2;">R$ ${PRECO},00</p>
+                            <p style="font-weight:700; color:white; margin:0; font-size:0.95rem; line-height:1.2;">${p.nome}</p>
+                            <p style="color:white; font-weight:800; font-size:0.85rem; margin:0; line-height:1.2;">R$ ${PRECO},00</p>
                         </div>
                     </div>
                     <!-- Garrafa centralizada entre texto e contador -->
@@ -1015,16 +1356,16 @@
                                 </linearGradient>
                             </defs>
                             <rect id="co-rect-${key}" x="0" y="${rectY}" width="72" height="${fillH}" fill="url(#co-grad-${key})" clip-path="url(#co-clip-${key})"/>
-                            <path d="M28 14 L28 38 Q14 50 12 72 L12 136 Q12 148 24 150 L48 150 Q60 148 60 136 L60 72 Q58 50 44 38 L44 14 Z" fill="rgba(255,255,255,0.08)" stroke="#49111C" stroke-width="2.5"/>
-                            <rect x="27" y="6" width="18" height="10" rx="3" fill="rgba(255,255,255,0.08)" stroke="#49111C" stroke-width="2"/>
-                            <rect x="29" y="2" width="14" height="7" rx="3" fill="#49111C"/>
-                            <rect x="16" y="90" width="40" height="28" rx="4" fill="rgba(255,255,255,0.55)" stroke="rgba(73,17,28,0.2)" stroke-width="1"/>
+                            <path d="M28 14 L28 38 Q14 50 12 72 L12 136 Q12 148 24 150 L48 150 Q60 148 60 136 L60 72 Q58 50 44 38 L44 14 Z" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.7)" stroke-width="2.5"/>
+                            <rect x="27" y="6" width="18" height="10" rx="3" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
+                            <rect x="29" y="2" width="14" height="7" rx="3" fill="rgba(255,255,255,0.4)"/>
+                            <rect x="16" y="90" width="40" height="28" rx="4" fill="rgba(255,255,255,0.55)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
                             <text x="36" y="102" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="7" font-weight="800" fill="#49111C">LICOR</text>
                             <text x="36" y="112" text-anchor="middle" font-family="'Segoe UI',sans-serif" font-size="6" fill="#49111C" opacity="0.7">DA CIDA</text>
                         </svg>
-                        <span id="co-pct-${key}" style="font-size:0.6rem; font-weight:800; color:var(--color-burgundy); white-space:nowrap;">${pct}%vol</span>
+                        <span id="co-pct-${key}" style="font-size:0.6rem; font-weight:800; color:white; white-space:nowrap;">${pct}%vol</span>
                     </div>
-                    <div style="display:flex; align-items:center; background:#f5f5f5; border-radius:10px;">
+                    <div style="display:flex; align-items:center; background:#f5f5f5; border-radius:10px; margin-left:12px;">
                         <button onclick="updateQty('${key}', -1)" style="border:none; padding:8px 12px; background:none; font-weight:bold; color:var(--color-black); cursor:pointer;">-</button>
                         <span style="font-weight:700; min-width:20px; text-align:center; color:var(--color-black);">${cart[key]}</span>
                         <button onclick="updateQty('${key}', 1)" style="border:none; padding:8px 12px; background:none; font-weight:bold; color:var(--color-black); cursor:pointer;">+</button>
@@ -1036,8 +1377,16 @@
 
     function togglePages() {
         const checkout = document.getElementById('checkout-page');
-        checkout.style.display = checkout.style.display === 'flex' ? 'none' : 'flex';
-        if (checkout.style.display === 'flex') renderCheckout();
+        const isOpen = checkout.style.display === 'flex';
+        if (isOpen) {
+            // Fechar → volta sempre pro Início
+            checkout.style.display = 'none';
+            setNavActive('nav-inicio');
+        } else {
+            // Abrir checkout
+            checkout.style.display = 'flex';
+            renderCheckout();
+        }
     }
 
     function checkForm() {
@@ -1107,7 +1456,103 @@
         window.open(`https://wa.me/5574988037555?text=${encodeURIComponent(msg)}`, '_blank');
     }
 
+
+    function scrollToCard(id) {
+        var card = document.getElementById('card-' + id);
+        if (!card) return;
+        var offset = 56 + 60; // header + filter nav height
+        var top = card.getBoundingClientRect().top + window.pageYOffset - offset;
+        window.scrollTo({ top: top, behavior: 'smooth' });
+        setActiveBtn(id);
+    }
+
+    function setActiveBtn(id) {
+        var btns = document.querySelectorAll('.filter-btn');
+        btns.forEach(function(b) { b.classList.remove('active'); });
+        var active = document.querySelector('.filter-btn[data-id="' + id + '"]');
+        if (active) {
+            active.classList.add('active');
+            active.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        }
+    }
+
+    // Highlight on scroll
+    window.addEventListener('scroll', function() {
+        var offset = 56 + 60 + 20;
+        var current = 0;
+        for (var i = 0; i < 10; i++) {
+            var el = document.getElementById('card-' + i);
+            if (!el) continue;
+            if (el.getBoundingClientRect().top <= offset) current = i;
+        }
+        setActiveBtn(current);
+    });
+
     window.onload = renderVitrine;
+
+    /* ── ABRIR CARRINHO COM VALIDAÇÃO ── */
+    function tryOpenCart() {
+        const totalQty = Object.values(cart).reduce((a, b) => a + b, 0);
+        if (totalQty === 0) {
+            showToast('Selecione ao menos um item 🛒');
+            return;
+        }
+        togglePages();
+        setNavActive('nav-carrinho');
+    }
+
+    function showToast(msg) {
+        let toast = document.getElementById('app-toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'app-toast';
+            toast.style.cssText = `
+                position:fixed; bottom:100px; left:50%; transform:translateX(-50%) translateY(20px);
+                background:#1E2235; color:white; border:1px solid rgba(255,214,0,0.4);
+                padding:12px 22px; border-radius:50px; font-size:0.82rem; font-weight:700;
+                z-index:9999; white-space:nowrap; opacity:0;
+                box-shadow:0 4px 20px rgba(0,0,0,0.4);
+                transition: opacity 0.25s, transform 0.25s;
+                pointer-events:none;
+            `;
+            document.body.appendChild(toast);
+        }
+        toast.textContent = msg;
+        // Aparece
+        requestAnimationFrame(() => {
+            toast.style.opacity = '1';
+            toast.style.transform = 'translateX(-50%) translateY(0)';
+        });
+        // Some
+        clearTimeout(toast._t);
+        toast._t = setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateX(-50%) translateY(20px)';
+        }, 2200);
+    }
+
+    /* ── NAV ATIVA ── */
+    function setNavActive(id) {
+        // Atualiza ícones do nav
+        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+        const btn = document.getElementById(id);
+        if (btn) btn.classList.add('active');
+
+        // Mostra/oculta páginas
+        const home   = document.getElementById('home-page');
+        const promo  = document.getElementById('promo-page');
+        const revend = document.getElementById('revenda-page');
+        const clube  = document.getElementById('clube-page');
+
+        [home, promo, revend, clube].forEach(p => { if(p) p.style.display = 'none'; });
+
+        if (id === 'nav-inicio')  { home.style.display = 'block'; }
+        if (id === 'nav-promo')   { promo.style.display = 'flex'; }
+        if (id === 'nav-revenda') { revend.style.display = 'flex'; }
+        if (id === 'nav-clube')   { clube.style.display = 'flex'; }
+        // nav-carrinho é tratado por togglePages()
+    }
+
 </script>
 </body>
 </html>
